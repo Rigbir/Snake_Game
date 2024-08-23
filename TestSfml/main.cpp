@@ -16,6 +16,7 @@
 #include "Style.h"
 #include "gameState.h"
 #include "Style_manger.h"
+#include "CursorTexture.h"
 
 #define RED_TEXT "\033[1;31m"
 #define WHITE_TEXT "\033[1;37m"
@@ -420,6 +421,8 @@ void draw(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::
 void startGame(char& input, gameState& state) {
 	sf::RenderWindow start(sf::VideoMode(1920, 1080), "Settings", sf::Style::Fullscreen);
 
+	Cursor::setCostumCursor(start, "backgroundTexture/hand.png");
+
 	sf::Font font;
 	if (!font.loadFromFile("font/Nautilus.otf")) {
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
@@ -812,6 +815,8 @@ void style(char& inputStyle, gameState& state, int page = 1) {
 	while (true) {
 		sf::RenderWindow styleWindow(sf::VideoMode(1920, 1080), "Settings", sf::Style::Fullscreen);
 
+		Cursor::setCostumCursor(styleWindow, "backgroundTexture/hand.png");
+
 		sf::Texture backgroundSecond;
 		if (!backgroundSecond.loadFromFile("backgroundTexture/monitorMain1.png")) {
 			std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
@@ -866,6 +871,8 @@ void endGame(int& snakeLength, gameState& state) {
 	}
 
 	sf::RenderWindow end(sf::VideoMode(1920, 1080), "End", sf::Style::Fullscreen);
+
+	Cursor::setCostumCursor(end, "backgroundTexture/hand.png");
 
 	sf::Texture textureBackSecond;
 	if (!textureBackSecond.loadFromFile("backgroundTexture/monitorMain1.png")) {
@@ -1144,6 +1151,8 @@ void recordMenu(gameState& state, int& firstRecord, int& secondRecord, int& thir
 
 	sf::RenderWindow record(sf::VideoMode(1920, 1080), "Record", sf::Style::Fullscreen);
 
+	Cursor::setCostumCursor(record, "backgroundTexture/hand.png");
+
 	sf::Texture textureBack;
 	if (!textureBack.loadFromFile("backgroundTexture/monitorMain1.png")) {
 		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
@@ -1295,6 +1304,8 @@ void menuBar(sf::RenderWindow& menu, int& headX, int& headY, char& input, int& o
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
 		return;
 	}
+
+	Cursor::setCostumCursor(menu, "backgroundTexture/hand.png");
 
 	sf::Texture textureBack;
 	if (!textureBack.loadFromFile("backgroundTexture/menuTextureBackground5.png")) {

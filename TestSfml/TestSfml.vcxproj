@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="CursorTexture.h" />
     <ClInclude Include="gameState.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Style.h" />
