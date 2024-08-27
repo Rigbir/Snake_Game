@@ -138,6 +138,102 @@ void fourthTexture() {
 	}
 }
 
+void fifthTexture() {
+
+	if (!bodyVertical.loadFromFile("fifthSnakeTexture/bodyVert.png") ||
+		!bodyHorizontal.loadFromFile("fifthSnakeTexture/bodyHor.png") ||
+		!leftUp.loadFromFile("fifthSnakeTexture/leftUp.png") ||
+		!rightUp.loadFromFile("fifthSnakeTexture/rightUp.png") ||
+		!leftDown.loadFromFile("fifthSnakeTexture/leftDown.png") ||
+		!rightDown.loadFromFile("fifthSnakeTexture/rightDown.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	if (!headUp.loadFromFile("fifthSnakeTexture/headUp.png") ||
+		!headDown.loadFromFile("fifthSnakeTexture/headDown.png") ||
+		!headLeft.loadFromFile("fifthSnakeTexture/headLeft.png") ||
+		!headRight.loadFromFile("fifthSnakeTexture/headRight.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	if (!tailUp.loadFromFile("fifthSnakeTexture/tailUp.png") ||
+		!tailLeft.loadFromFile("fifthSnakeTexture/tailLeft.png") ||
+		!tailRight.loadFromFile("fifthSnakeTexture/tailRight.png") ||
+		!tailDown.loadFromFile("fifthSnakeTexture/tailDown.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+}
+
+void sixTexture() {
+
+	if (!bodyVertical.loadFromFile("sixSnakeTexture/bodyVert.png") ||
+		!bodyHorizontal.loadFromFile("sixSnakeTexture/bodyHor.png") ||
+		!leftUp.loadFromFile("sixSnakeTexture/leftUp.png") ||
+		!rightUp.loadFromFile("sixSnakeTexture/rightUp.png") ||
+		!leftDown.loadFromFile("sixSnakeTexture/leftDown.png") ||
+		!rightDown.loadFromFile("sixSnakeTexture/rightDown.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	if (!headUp.loadFromFile("sixSnakeTexture/headUp.png") ||
+		!headDown.loadFromFile("sixSnakeTexture/headDown.png") ||
+		!headLeft.loadFromFile("sixSnakeTexture/headLeft.png") ||
+		!headRight.loadFromFile("sixSnakeTexture/headRight.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	if (!tailUp.loadFromFile("sixSnakeTexture/tailUp.png") ||
+		!tailLeft.loadFromFile("sixSnakeTexture/tailLeft.png") ||
+		!tailRight.loadFromFile("sixSnakeTexture/tailRight.png") ||
+		!tailDown.loadFromFile("sixSnakeTexture/tailDown.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+}
+
+void sevenTexture() {
+
+	if (!bodyVertical.loadFromFile("sevenSnakeTexture/bodyVert.png") ||
+		!bodyHorizontal.loadFromFile("sevenSnakeTexture/bodyHor.png") ||
+		!leftUp.loadFromFile("sevenSnakeTexture/leftUp.png") ||
+		!rightUp.loadFromFile("sevenSnakeTexture/rightUp.png") ||
+		!leftDown.loadFromFile("sevenSnakeTexture/leftDown.png") ||
+		!rightDown.loadFromFile("sevenSnakeTexture/rightDown.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	if (!headUp.loadFromFile("sevenSnakeTexture/headUp.png") ||
+		!headDown.loadFromFile("sevenSnakeTexture/headDown.png") ||
+		!headLeft.loadFromFile("sevenSnakeTexture/headLeft.png") ||
+		!headRight.loadFromFile("sevenSnakeTexture/headRight.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	if (!tailUp.loadFromFile("sevenSnakeTexture/tailUp.png") ||
+		!tailLeft.loadFromFile("sevenSnakeTexture/tailLeft.png") ||
+		!tailRight.loadFromFile("sevenSnakeTexture/tailRight.png") ||
+		!tailDown.loadFromFile("sevenSnakeTexture/tailDown.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+}
+
 void styleChooce(char& inputStyle) {
 	switch (inputStyle)
 	{
@@ -152,6 +248,15 @@ void styleChooce(char& inputStyle) {
 		break;
 	case '4':
 		fourthTexture();
+		break;
+	case '5':
+		fifthTexture();
+		break;
+	case '6':
+		sixTexture();
+		break;
+	case '7':
+		sevenTexture();
 		break;
 	}
 }

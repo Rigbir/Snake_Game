@@ -16,7 +16,12 @@
 #include "Style.h"
 #include "gameState.h"
 #include "Style_manger.h"
+#include "Arcad_manger.h"
+#include "DrawArcadField.h"
 #include "CursorTexture.h"
+#include "DrawField.h"
+
+#include "Sounds.h"
 
 #define RED_TEXT "\033[1;31m"
 #define WHITE_TEXT "\033[1;37m"
@@ -26,17 +31,7 @@
 
 #define RESET_TEXT "\033[0m"
 
-const int cellSize = 35;
-const int rows = 20;
-const int cols = 25;
-
-sf::Music music;
-sf::Music endMusic;
-sf::SoundBuffer buffer;
-
 int snakeLength = 1;
-enum direction { right, left, up, down };
-direction dir = right;
 
 enum speed { first = 30, second = 50, third = 100, fourth = 150, add = 75 };
 speed sp = second;
@@ -79,7 +74,7 @@ void startPosition(std::vector<std::vector<char>>& field, int& headX, int& headY
 	}
 }
 
-void food(std::vector<std::vector<char>>& field) {
+ /*void food(std::vector<std::vector<char>>& field) {
 	int rows = field.size();
 	int cols = field[0].size();
 	srand(time(NULL));
@@ -98,9 +93,9 @@ void food(std::vector<std::vector<char>>& field) {
 		int index = rand() % freePositions.size();
 		field[freePositions[index].first][freePositions[index].second] = '@';
 	}
-}
+}*/
 
-bool foodCheck(std::vector<std::vector<char>>& field) {
+ /*bool foodCheck(std::vector<std::vector<char>>& field) {
 	int rows = field.size();
 	int cols = field[0].size();
 
@@ -111,51 +106,11 @@ bool foodCheck(std::vector<std::vector<char>>& field) {
 		}
 	}
 	return false;
-}
+}*/
 
-void foodSound() {
-	if (!buffer.loadFromFile("Music/SoundMoney.wav")) {
-		std::cerr << RED_TEXT << "Error loading sound file" << RESET_TEXT << std::endl;
-		return;
-	}
-	static sf::Sound eatSound;
-	eatSound.setBuffer(buffer);
-	eatSound.setVolume(100); 
-	eatSound.play();
-}
-
-void endSound() {
-	if (!endMusic.openFromFile("Music/gameOver.wav")) {
-		std::cerr << RED_TEXT << "Error loading sound file" << RESET_TEXT << std::endl;
-		return;
-	}
-	endMusic.setVolume(100);
-	endMusic.play();
-}
-
-void mainSound() {
-	if (!music.openFromFile("Music/electro.wav")) {
-		std::cerr << RED_TEXT << "Error loading sound file" << RESET_TEXT << std::endl;
-		return;
-	}
-	music.setLoop(true);
-	music.play();
-}
-
-void soundBotton() {
-	if (!buffer.loadFromFile("Music/menuChoice.wav")) {
-		std::cerr << RED_TEXT << "Error loading sound file" << RESET_TEXT << std::endl;
-		return;
-	}
-	static sf::Sound bottonSound;
-	bottonSound.setBuffer(buffer);
-	bottonSound.setVolume(100);
-	bottonSound.play();
-}
-
-void move(std::vector<std::vector<char>>& field, int& headX, int& headY, std::vector<std::pair<int, int>>& snake, int& snakeLength, sf::RenderWindow& window, sf::Font& font, gameState& state) {
-
-	switch (dir) {
+void move(std::vector<std::vector<char>>& field, int& headX, int& headY, std::vector<std::pair<int, int>>& snake, int& snakeLength, sf::RenderWindow& window, gameState& state) {
+	
+	/*switch (dir) {
 	case left: headY -= 1; break;
 	case right: headY += 1; break;
 	case up: headX -= 1; break;
@@ -173,6 +128,7 @@ void move(std::vector<std::vector<char>>& field, int& headX, int& headY, std::ve
 		snakeLength++;
 		foodSound();
 		food(field);
+		++foodIndex;
 	}
 
 	if (foodCheck(field) == false) {
@@ -186,7 +142,7 @@ void move(std::vector<std::vector<char>>& field, int& headX, int& headY, std::ve
 		std::pair<int, int> tail = snake.back();
 		snake.pop_back();
 		field[tail.first][tail.second] = ' ';
-	}
+	}*/
 }
 
 void dynamicSpeed(int& snakeLength) {
@@ -367,55 +323,10 @@ void textureSnake(sf::RenderWindow& window, std::vector<std::pair<int, int>>& sn
 	}
 }
 
-void draw(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void draw(char& inputStyle, sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
 
-	sf::Texture food;
-	if (!food.loadFromFile("secondSnakeTexture/food.png")) {
-		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
-		return;
-	}
+	fieldChoose(inputStyle, window, field, snake, offsetX, offsetY);
 
-	sf::Sprite spriteFood;
-	spriteFood.setTexture(food);
-
-	float scaleX = static_cast<float>(cellSize) / food.getSize().x;
-	float scaleY = static_cast<float>(cellSize) / food.getSize().y;
-	spriteFood.setScale(scaleX, scaleY);
-
-
-	for (int i = 0; i < rows; ++i) {
-		for (int j = 0; j < cols; ++j) {
-			sf::RectangleShape rectangle(sf::Vector2f(cellSize, cellSize));
-			rectangle.setPosition(static_cast<float>(j * cellSize + offsetX), static_cast<float>(i * cellSize + offsetY - 120));
-			
-			if (field[i][j] == '1') {
-				rectangle.setFillColor(sf::Color(80, 80, 80));
-			}
-			else if (field[i][j] == '@') {
-				spriteFood.setPosition(static_cast<float>(j * cellSize + offsetX), static_cast<float>(i * cellSize + offsetY - 120));
-				window.draw(spriteFood);
-				continue;
-				//rectangle.setFillColor(sf::Color(255, 0, 0));
-			}
-			else {
-				rectangle.setFillColor(sf::Color::Black);
-			}
-			window.draw(rectangle);
-		}
-	}
-
-	for (int i = 1; i < snake.size() - 1; ++i) {
-		int x = snake[i].first;
-		int y = snake[i].second;
-
-		sf::RectangleShape rectangle(sf::Vector2f(cellSize, cellSize));
-		rectangle.setPosition(static_cast<float>(y * cellSize + offsetX), static_cast<float>(x * cellSize + offsetY - 120));
-
-		if (i != '1' && i != '@') {
-			rectangle.setFillColor(sf::Color(102, 255, 102));
-		}
-		window.draw(rectangle);
-	}
 }
 
 void startGame(char& input, gameState& state) {
@@ -424,7 +335,7 @@ void startGame(char& input, gameState& state) {
 	Cursor::setCostumCursor(start, "backgroundTexture/hand.png");
 
 	sf::Font font;
-	if (!font.loadFromFile("font/Nautilus.otf")) {
+	if (!font.loadFromFile("font/ArcadeClassic.ttf")) {
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
 		return;
 	}
@@ -463,10 +374,10 @@ void startGame(char& input, gameState& state) {
 	std::cout << startSize.x << " " << startSize.y;
 	backgroundSecond.setTextureRect(sf::IntRect(0, 0, startSize.x, startSize.y));
 
-	sf::Text speedLabel("Speed (1 - 5)", font, 80);
+	sf::Text speedLabel("Choose   Speed", font, 80);
 	speedLabel.setFillColor(sf::Color::White);
 	speedLabel.setOutlineThickness(3.0f);
-	speedLabel.setPosition(775, 125);
+	speedLabel.setPosition(710, 125);
 
 	Button first("quickly", { 300, 100 }, 65, sf::Color::White);
 	first.setFont(font);
@@ -624,193 +535,6 @@ void startGame(char& input, gameState& state) {
 	state = GAME;
 }
 
-/*void TESTstyle(char& inputStyle, gameState& state) {
-	/*sf::RenderWindow style(sf::VideoMode(1920, 1080), "Settings", sf::Style::Fullscreen);
-
-	sf::Texture textureBackSecond;
-	if (!textureBackSecond.loadFromFile("monitorMain1.png")) {
-		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
-		return;
-	}
-
-	sf::Sprite backgroundSecond;
-	backgroundSecond.setTexture(textureBackSecond);
-
-	sf::Vector2u styleSize = style.getSize();
-	std::cout << styleSize.x << " " << styleSize.y;
-	backgroundSecond.setTextureRect(sf::IntRect(0, 0, styleSize.x, styleSize.y));
-
-	sf::Texture textureBackFirst;
-	if (!textureBackFirst.loadFromFile("style/styleBack.png")) {
-		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
-		return;
-	}
-
-	sf::Sprite backgroundFirst;
-	backgroundFirst.setTexture(textureBackFirst);
-
-	sf::Vector2u styleWindow = style.getSize();
-
-	float styleWidth = rows * cellSize;
-	float styleHeight = cols * cellSize;
-
-	float offX = (styleSize.x - styleWidth) / 2.0f;
-	float offY = (styleSize.y - styleHeight) / 2.0f;
-
-	backgroundFirst.setPosition({ offX - 90, offY - 25 });
-
-	//--------------------------------------------
-
-	/*sf::Texture styleFirst;
-	if (!styleFirst.loadFromFile("style/style1.png")) {
-		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
-		return;
-	}
-
-	sf::Vector2u firstSize = styleFirst.getSize();
-
-	float firstX = (styleWindow.x - firstSize.x) / 2.0f;
-	float firstY = (styleWindow.y - firstSize.y) / 2.0f;
-
-	Button first("", { 432, 350 }, 65, sf::Color::White);
-	first.setTexture(styleFirst);
-	first.setPosition({ firstX - 4, firstY - 113});
-
-	//--------------------------------------------
-
-	sf::Texture styleSecond;
-	if (!styleSecond.loadFromFile("style/style2.png")) {
-		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
-		return;
-	}
-
-	Button second("", { 432, 350 }, 65, sf::Color::White);
-
-	sf::Vector2u secondSize = styleSecond.getSize();
-
-	float secondX = (styleWindow.x - secondSize.x) / 2.0f;
-	float secondY = (styleWindow.y - secondSize.y) / 2.0f;
-
-	second.setTexture(styleSecond);
-	second.setPosition({ secondX + secondSize.x - 3, secondY - 113 });
-
-	//--------------------------------------------
-
-	sf::Texture styleThird;
-	if (!styleThird.loadFromFile("style/style3.png")) {
-		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
-		return;
-	}
-
-	Button third("", { 432, 350 }, 65, sf::Color::White);
-
-	sf::Vector2u thirdSize = styleThird.getSize();
-
-	float thirdX = (styleWindow.x - thirdSize.x) / 2.0f;
-	float thirdY = (styleWindow.y - thirdSize.y) / 2.0f;
-
-	third.setTexture(styleThird);
-	third.setPosition({ thirdX - 4, thirdY + thirdSize.y - 113 });
-
-	//--------------------------------------------
-
-	sf::Texture styleFourth;
-	if (!styleFourth.loadFromFile("style/style4.png")) {
-		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
-		return;
-	}
-
-	Button fourth("", { 432, 350 }, 65, sf::Color::White);
-
-	sf::Vector2u fourthSize = styleFourth.getSize();
-
-	float fourthX = (styleWindow.x - fourthSize.x) / 2.0f;
-	float fourthY = (styleWindow.y - fourthSize.y) / 2.0f;
-
-	fourth.setTexture(styleFourth);
-	fourth.setPosition({ fourthX + fourthSize.x - 3, fourthY + fourthSize.y - 113 });
-
-	//--------------------------------------------
-
-	while (window.isOpen()) {
-		sf::Event event;
-		while (window.pollEvent(event)) {
-
-			if (event.type == sf::Event::MouseButtonPressed) {
-				if (event.mouseButton.button == sf::Mouse::Left) {
-					if (first.mousePosition(window)) {
-						first.setPressed(true);
-						soundBotton();
-					}
-
-					if (second.mousePosition(window)) {
-						second.setPressed(true);
-						soundBotton();
-					}
-
-					if (third.mousePosition(window)) {
-						third.setPressed(true);
-						soundBotton();
-					}
-
-					if (fourth.mousePosition(window)) {
-						fourth.setPressed(true);
-						soundBotton();
-					}
-				}
-			}
-
-			if (event.type == sf::Event::MouseButtonReleased) {
-				if (event.mouseButton.button == sf::Mouse::Left) {
-					if (first.getPressed()) {
-						first.setPressed(false);
-						sf::sleep(sf::milliseconds(100));
-						inputStyle = '1';
-						std::cout << "Input value style: " << inputStyle << std::endl;
-						window.close();
-					}else if (second.getPressed()) {
-						second.setPressed(false);
-						sf::sleep(sf::milliseconds(100));
-						inputStyle = '2';
-						std::cout << "Input value style: " << inputStyle << std::endl;
-						window.close();
-					}else if (third.getPressed()) {
-						third.setPressed(false);
-						sf::sleep(sf::milliseconds(100));
-						inputStyle = '3';
-						std::cout << "Input value style: " << inputStyle << std::endl;
-						window.close();
-					}else if (fourth.getPressed()) {
-						fourth.setPressed(false);
-						sf::sleep(sf::milliseconds(100));
-						inputStyle = '4';
-						std::cout << "Input value style: " << inputStyle << std::endl;
-						window.close();
-					}
-				}
-			}
-
-			first.styleUpdate(window);
-			second.styleUpdate(window);
-			third.styleUpdate(window);
-			fourth.styleUpdate(window);
-
-			window.clear();
-
-			window.draw(backgroundSecond);
-			window.draw(backgroundFirst);
-
-			first.drawTo(window);
-			second.drawTo(window);
-			third.drawTo(window);
-			fourth.drawTo(window);
-
-			window.display();
-		}
-	}
-	state = START;
-}*/
-
 void style(char& inputStyle, gameState& state, int page = 1) {
 	while (true) {
 		sf::RenderWindow styleWindow(sf::VideoMode(1920, 1080), "Settings", sf::Style::Fullscreen);
@@ -849,10 +573,13 @@ void style(char& inputStyle, gameState& state, int page = 1) {
 			styleFourth.loadFromFile("style/style4.png");
 		}
 		else if (page == 2) {
-			styleFirst.loadFromFile("style/style1.png");
-			styleSecond.loadFromFile("style/style2.png");
-			styleThird.loadFromFile("style/style3.png");
-			styleFourth.loadFromFile("style/style4.png");
+			styleFirst.loadFromFile("style/style5.png");
+			styleSecond.loadFromFile("style/style6.png");
+			styleThird.loadFromFile("style/style7.png");
+			styleFourth.loadFromFile("style/loading.png");
+		}
+		else if (page == 3) {
+			break;
 		}
 
 		displayStyleWindow(styleWindow, inputStyle, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
@@ -865,7 +592,7 @@ void style(char& inputStyle, gameState& state, int page = 1) {
 
 void endGame(int& snakeLength, gameState& state) {
 	sf::Font font;
-	if (!font.loadFromFile("font/Nautilus.otf")) {
+	if (!font.loadFromFile("font/ArcadeClassic.ttf")) {
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
 		return;
 	}
@@ -910,14 +637,14 @@ void endGame(int& snakeLength, gameState& state) {
 
 	sf::Text text;
 	text.setFont(font);
-	text.setString("Game Over!\n\n  Score: " + std::to_string(snakeLength));
+	text.setString("Game Over!\n\n    Score   " + std::to_string(snakeLength));
 	text.setCharacterSize(90);
 	text.setFillColor(sf::Color::White);
 	text.setOutlineThickness(3.0f);
 	text.setStyle(sf::Text::Bold);
 	sf::FloatRect textBounds = text.getGlobalBounds();
 	text.setOrigin(textBounds.width / 2.0f, textBounds.height / 2.0f);
-	text.setPosition(970, 270);
+	text.setPosition(970, 280);
 
 	float startWidth = rows * cellSize;
 	float startHeight = cols * cellSize;
@@ -1027,7 +754,7 @@ void saveRecords(int firstRecord, int secondRecord, int thirdRecord, int fourthR
 	}
 }
 
-void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, int& offsetY, gameState& state, char& inputStyle, int& firstRecord, int& secondRecord, int& thirdRecord, int& fourthRecord, int& dynamicRecord) {
+void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, int& offsetY, gameState& state, char& inputArcad, char& inputStyle, int& firstRecord, int& secondRecord, int& thirdRecord, int& fourthRecord, int& dynamicRecord) {
 	sf::Font font;
 	if (!font.loadFromFile("font/arial.ttf")) {
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
@@ -1107,13 +834,15 @@ void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, in
 		}
 
 		if (state == GAME) {
-			move(field, headX, headY, snake, snakeLength, window, font, state);
+
+			chooceArcad(inputArcad, window, headX, headY, snakeLength, state, field, snake);
+			//move(field, headX, headY, snake, snakeLength, window, state);
 			directionChanged = false;
 
 			window.clear();
 
 			window.draw(backgroundSecond);
-			draw(window, field, snake, offsetX, offsetY);
+			draw(inputStyle, window, field, snake, offsetX, offsetY);
 			textureSnake(window, snake, offsetX, offsetY, inputStyle);
 			coundScore(window, snakeLength, font, field, offsetX, offsetY);
 
@@ -1140,11 +869,18 @@ void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, in
 			break;
 		}
 	}
+	music.stop();
 }
 
 void recordMenu(gameState& state, int& firstRecord, int& secondRecord, int& thirdRecord, int& fourthRecord, int& dynamicRecord) {
 	sf::Font font;
 	if (!font.loadFromFile("font/arial.ttf")) {
+		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	sf::Font fontButton;
+	if (!fontButton.loadFromFile("font/ArcadeClassic.ttf")) {
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
 		return;
 	}
@@ -1195,7 +931,7 @@ void recordMenu(gameState& state, int& firstRecord, int& secondRecord, int& thir
 	}
 
 	Button menu("menu", { 300, 100 }, 65, sf::Color::White);
-	menu.setFont(font);
+	menu.setFont(fontButton);
 	menu.setTextStyle();
 	menu.setTextOutline(2.0f);
 	menu.setTexture(buttonBackNormal);
@@ -1294,13 +1030,64 @@ void recordMenu(gameState& state, int& firstRecord, int& secondRecord, int& thir
 
 }
 
-void arcad(gameState& state) {
+void arcad(char& inputArcad, gameState& state, int page = 1) {
+	while (true) {
+		sf::RenderWindow ArcadWindow(sf::VideoMode(1920, 1080), "Arcad", sf::Style::Fullscreen);
 
+		Cursor::setCostumCursor(ArcadWindow, "backgroundTexture/hand.png");
+
+		sf::Texture backgroundSecond;
+		if (!backgroundSecond.loadFromFile("backgroundTexture/monitorMain1.png")) {
+			std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
+			return;
+		}
+
+		sf::Texture backgroundFirst;
+		if (!backgroundFirst.loadFromFile("style/styleBack.png")) {
+			std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
+			return;
+		}
+
+		sf::Texture buttonBackNormal;
+		if (!buttonBackNormal.loadFromFile("backgroundTexture/layer3.png")) {
+			std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
+			return;
+		}
+
+		sf::Texture buttonBackClick;
+		if (!buttonBackClick.loadFromFile("backgroundTexture/layer4.png")) {
+			std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
+			return;
+		}
+
+		sf::Texture styleFirst, styleSecond, styleThird, styleFourth;
+		if (page == 1) {
+			styleFirst.loadFromFile("style/style1.png");
+			styleSecond.loadFromFile("style/style2.png");
+			styleThird.loadFromFile("style/style3.png");
+			styleFourth.loadFromFile("style/style4.png");
+		}
+		else if (page == 2) {
+			styleFirst.loadFromFile("style/style5.png");
+			styleSecond.loadFromFile("style/style6.png");
+			styleThird.loadFromFile("style/style7.png");
+			styleFourth.loadFromFile("style/loading.png");
+		}
+		else if (page == 3) {
+			break;
+		}
+
+		displayArcadWindow(ArcadWindow, inputArcad, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
+
+		if (state != ARCAD) {
+			break;
+		}
+	}
 }
 
 void menuBar(sf::RenderWindow& menu, int& headX, int& headY, char& input, int& offsetX, int& offsetY, gameState& state) {	
 	sf::Font font;
-	if (!font.loadFromFile("font/Nautilus.otf")) {
+	if (!font.loadFromFile("font/ArcadeClassic.ttf")) {
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
 		return;
 	}
@@ -1512,6 +1299,7 @@ int main() {
 
 	char input;
 	char inputStyle;
+	char inputArcad;
 
 	sf::Font font;
 	if (!font.loadFromFile("font/arial.ttf")) {
@@ -1542,16 +1330,18 @@ int main() {
 			checkButton = true;
 			break;
 		case ARCAD:
-			arcad(state);
+			arcad(inputArcad, state);
 			break;
 		case RECORD:
 			recordMenu(state, firstRecord, secondRecord, thirdRecord, fourthRecord, dynamicRecord);
 			break;
 		case GAME:
-			startGameWithSettings(headX, headY, input, offsetX, offsetY, state, inputStyle, firstRecord, secondRecord, thirdRecord, fourthRecord, dynamicRecord);
+			startGameWithSettings(headX, headY, input, offsetX, offsetY, state, inputArcad, inputStyle, firstRecord, secondRecord, thirdRecord, fourthRecord, dynamicRecord);
 			break;
 		case END:
 			endGame(snakeLength, state);
+
+			foodIndex = 0;
 
 			if (!checkEnd) {
 				state = GAME;

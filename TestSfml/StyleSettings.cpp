@@ -17,7 +17,7 @@ void soundBottonSecond() {
 void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page) {
 
 	sf::Font font;
-	if (!font.loadFromFile("font/Nautilus.otf")) {
+	if (!font.loadFromFile("font/ArcadeClassic.ttf")) {
 		return;
 	}
 
@@ -117,7 +117,10 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 					if (first.getPressed()) {
 						first.setPressed(false);
 						sf::sleep(sf::milliseconds(100));
-						inputStyle = '1';
+						if (page == 1)
+							inputStyle = '1';
+						else if (page == 2)
+							inputStyle = '5';
 						std::cout << "Input value style: " << inputStyle << std::endl;
 						window.close();
 						state = START;
@@ -125,7 +128,10 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 					else if (second.getPressed()) {
 						second.setPressed(false);
 						sf::sleep(sf::milliseconds(100));
-						inputStyle = '2';
+						if (page == 1)
+							inputStyle = '2';
+						else if (page == 2)
+							inputStyle = '6';
 						std::cout << "Input value style: " << inputStyle << std::endl;
 						window.close();
 						state = START;
@@ -133,7 +139,10 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 					else if (third.getPressed()) {
 						third.setPressed(false);
 						sf::sleep(sf::milliseconds(100));
-						inputStyle = '3';
+						if (page == 1)
+							inputStyle = '3';
+						else if (page == 2)
+							inputStyle = '7';
 						std::cout << "Input value style: " << inputStyle << std::endl;
 						window.close();
 						state = START;
@@ -141,7 +150,10 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 					else if (fourth.getPressed()) {
 						fourth.setPressed(false);
 						sf::sleep(sf::milliseconds(100));
-						inputStyle = '4';
+						if (page == 1)
+							inputStyle = '4';
+						else if (page == 2)
+							inputStyle = '8';
 						std::cout << "Input value style: " << inputStyle << std::endl;
 						window.close();
 						state = START;
