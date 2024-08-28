@@ -134,7 +134,7 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 							inputArcad = '6';
 						std::cout << "Input value style: " << inputArcad << std::endl;
 						window.close();
-						state = STYLE;
+						state = START;
 					}
 					else if (third.getPressed()) {
 						third.setPressed(false);
@@ -145,7 +145,7 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 							inputArcad = '7';
 						std::cout << "Input value style: " << inputArcad << std::endl;
 						window.close();
-						state = STYLE;
+						state = START;
 					}
 					else if (fourth.getPressed()) {
 						fourth.setPressed(false);
@@ -156,7 +156,7 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 							inputArcad = '8';
 						std::cout << "Input value style: " << inputArcad << std::endl;
 						window.close();
-						state = STYLE;
+						state = START;
 					}
 					else if (nextButton.getPressed()) {
 						nextButton.setPressed(false);

@@ -139,17 +139,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arcad1.cpp" />
     <ClCompile Include="ArcadSettings.cpp" />
+    <ClCompile Include="globals.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Sounds.cpp" />
     <ClCompile Include="StyleSettings.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arcad1.h" />
     <ClInclude Include="Arcad_manger.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CursorTexture.h" />
-    <ClInclude Include="DrawArcadField.h" />
     <ClInclude Include="DrawField.h" />
     <ClInclude Include="gameState.h" />
+    <ClInclude Include="globals.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sounds.h" />
     <ClInclude Include="Style.h" />

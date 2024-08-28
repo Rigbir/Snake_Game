@@ -11,17 +11,19 @@
 
 #include <windows.h>
 
+#include "globals.h"
 #include "resource.h"
 #include "Button.h"
 #include "Style.h"
 #include "gameState.h"
 #include "Style_manger.h"
 #include "Arcad_manger.h"
-#include "DrawArcadField.h"
 #include "CursorTexture.h"
 #include "DrawField.h"
 
 #include "Sounds.h"
+
+#include "Arcad1.h"
 
 #define RED_TEXT "\033[1;31m"
 #define WHITE_TEXT "\033[1;37m"
@@ -30,11 +32,6 @@
 #define BLUE_TEXT "\033[0;94m"
 
 #define RESET_TEXT "\033[0m"
-
-int snakeLength = 1;
-
-enum speed { first = 30, second = 50, third = 100, fourth = 150, add = 75 };
-speed sp = second;
 
 bool isStyleChosen = false;
 bool checkButton = false;
@@ -73,40 +70,6 @@ void startPosition(std::vector<std::vector<char>>& field, int& headX, int& headY
 		}
 	}
 }
-
- /*void food(std::vector<std::vector<char>>& field) {
-	int rows = field.size();
-	int cols = field[0].size();
-	srand(time(NULL));
-
-	std::vector<std::pair<int, int>> freePositions;
-
-	for (int i = 1; i < rows - 1; ++i) {
-		for (int j = 1; j < cols - 1; ++j) {
-			if (field[i][j] != 'O' && field[i][j] != '1') {
-				freePositions.push_back({ i, j });
-			}
-		}
-	}
-
-	if (!freePositions.empty()) {
-		int index = rand() % freePositions.size();
-		field[freePositions[index].first][freePositions[index].second] = '@';
-	}
-}*/
-
- /*bool foodCheck(std::vector<std::vector<char>>& field) {
-	int rows = field.size();
-	int cols = field[0].size();
-
-	for (int i = 1; i < rows - 1; ++i) {
-		for (int j = 1; j < cols - 1; ++j) {
-			if (field[i][j] == '@')
-				return true;
-		}
-	}
-	return false;
-}*/
 
 void move(std::vector<std::vector<char>>& field, int& headX, int& headY, std::vector<std::pair<int, int>>& snake, int& snakeLength, sf::RenderWindow& window, gameState& state) {
 	
@@ -782,6 +745,15 @@ void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, in
 	std::vector<std::vector<char>> field = barier();
 	std::vector<std::pair<int, int>> snake;
 
+	switch (inputArcad) {
+	case '1':
+		field = firstField();
+		break;
+	default:
+		field = barier();
+		break;
+	}
+
 	mainSound();
 
 	speedDirection(snakeLength, input);
@@ -836,7 +808,7 @@ void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, in
 		if (state == GAME) {
 
 			chooceArcad(inputArcad, window, headX, headY, snakeLength, state, field, snake);
-			//move(field, headX, headY, snake, snakeLength, window, state);
+
 			directionChanged = false;
 
 			window.clear();
@@ -1062,16 +1034,16 @@ void arcad(char& inputArcad, gameState& state, int page = 1) {
 
 		sf::Texture styleFirst, styleSecond, styleThird, styleFourth;
 		if (page == 1) {
-			styleFirst.loadFromFile("style/style1.png");
-			styleSecond.loadFromFile("style/style2.png");
-			styleThird.loadFromFile("style/style3.png");
-			styleFourth.loadFromFile("style/style4.png");
+			styleFirst.loadFromFile("style/arcad1.png");
+			styleSecond.loadFromFile("style/arcad.png");
+			styleThird.loadFromFile("style/arcad.png");
+			styleFourth.loadFromFile("style/arcad.png");
 		}
 		else if (page == 2) {
-			styleFirst.loadFromFile("style/style5.png");
-			styleSecond.loadFromFile("style/style6.png");
-			styleThird.loadFromFile("style/style7.png");
-			styleFourth.loadFromFile("style/loading.png");
+			styleFirst.loadFromFile("style/arcad.png");
+			styleSecond.loadFromFile("style/arcad.png");
+			styleThird.loadFromFile("style/arcad.png");
+			styleFourth.loadFromFile("style/arcad.png");
 		}
 		else if (page == 3) {
 			break;
@@ -1357,6 +1329,7 @@ int main() {
 				headX = 0;
 				headY = 0;
 
+				inputArcad = ' ';
 				state = MENU;
 			}
 			break;

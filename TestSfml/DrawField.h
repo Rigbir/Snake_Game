@@ -2,8 +2,7 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
-
-extern int foodIndex = 0;
+#include "globals.h"
 
 void drawBlackField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
 
@@ -249,6 +248,15 @@ void drawSpaceField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 		return;
 	}
 
+	sf::Texture barier;
+	if (!barier.loadFromFile("sevenSnakeTexture/barier.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Sprite spriteBarier;
+	spriteBarier.setTexture(barier);
+
 	for (int i = 0; i < 20; ++i) {
 		for (int j = 0; j < 25; ++j) {
 			sf::Sprite spriteBorder;
@@ -304,6 +312,11 @@ void drawSpaceField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 					continue;
 				}
 			}
+			else if (field[i][j] == '1') {
+				spriteBarier.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+				window.draw(spriteBarier);
+				continue;
+			}
 			else {
 				spriteField.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
 				window.draw(spriteField);
@@ -341,5 +354,4 @@ void fieldChoose(char& inputStyle, sf::RenderWindow& window, std::vector<std::ve
 		drawSpaceField(window, field, snake, offsetX, offsetY);
 		break;
 	}
-
 }
