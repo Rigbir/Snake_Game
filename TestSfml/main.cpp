@@ -24,6 +24,7 @@
 #include "Sounds.h"
 
 #include "Arcad1.h"
+#include "Arcad2.h"
 
 #define RED_TEXT "\033[1;31m"
 #define WHITE_TEXT "\033[1;37m"
@@ -36,6 +37,7 @@
 bool isStyleChosen = false;
 bool checkButton = false;
 bool checkEnd = false;
+bool checkSound = false;
 
 void endGame(int& snakeLength, gameState& state);
 
@@ -57,8 +59,6 @@ std::vector<std::vector<char>> barier() {
 void startPosition(std::vector<std::vector<char>>& field, int& headX, int& headY, std::vector<std::pair<int, int>>& snake) {
 	int rows = field.size();
 	int cols = field[0].size();
-
-	srand(time(NULL));
 
 	while (true) {
 		headX = (rows - 2) / 2 + 1;
@@ -404,31 +404,31 @@ void startGame(char& input, gameState& state) {
 					if (first.mousePosition(start)) {
 						first.setPressed(true);
 						first.textureUpdate(start, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 
 					if (second.mousePosition(start)) {
 						second.setPressed(true);
 						second.textureUpdate(start, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 
 					if (third.mousePosition(start)) {
 						third.setPressed(true);
 						third.textureUpdate(start, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 
 					if (fourth.mousePosition(start)) {
 						fourth.setPressed(true);
 						fourth.textureUpdate(start, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 
 					if (dynamic.mousePosition(start)) {
 						dynamic.setPressed(true);
 						dynamic.textureUpdate(start, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 				}
 			}
@@ -545,7 +545,7 @@ void style(char& inputStyle, gameState& state, int page = 1) {
 			break;
 		}
 
-		displayStyleWindow(styleWindow, inputStyle, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
+		displayStyleWindow(styleWindow, inputStyle, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page, checkSound);
 		
 		if (state != STYLE) {
 			break;
@@ -645,13 +645,13 @@ void endGame(int& snakeLength, gameState& state) {
 					if (restart.mousePosition(end)) {
 						restart.setPressed(true);
 						restart.textureUpdate(end, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 
 					if (menu.mousePosition(end)) {
 						menu.setPressed(true);
 						menu.textureUpdate(end, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 				}
 			}
@@ -749,12 +749,15 @@ void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, in
 	case '1':
 		field = firstField();
 		break;
+	case '2':
+		field = secondField();
+		break;
 	default:
 		field = barier();
 		break;
 	}
 
-	mainSound();
+	mainSound(checkSound);
 
 	speedDirection(snakeLength, input);
 	startPosition(field, headX, headY, snake);
@@ -807,7 +810,7 @@ void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, in
 
 		if (state == GAME) {
 
-			chooceArcad(inputArcad, window, headX, headY, snakeLength, state, field, snake);
+			chooceArcad(inputArcad, window, headX, headY, snakeLength, state, field, snake, checkSound);
 
 			directionChanged = false;
 
@@ -964,7 +967,7 @@ void recordMenu(gameState& state, int& firstRecord, int& secondRecord, int& thir
 					if (menu.mousePosition(record)) {
 						menu.setPressed(true);
 						menu.textureUpdate(record, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 				}
 			}
@@ -974,7 +977,7 @@ void recordMenu(gameState& state, int& firstRecord, int& secondRecord, int& thir
 					if (menu.getPressed()) {
 						menu.setPressed(false);
 						menu.textureUpdate(record, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 						record.close();
 						state = MENU;
 					}
@@ -1035,7 +1038,7 @@ void arcad(char& inputArcad, gameState& state, int page = 1) {
 		sf::Texture styleFirst, styleSecond, styleThird, styleFourth;
 		if (page == 1) {
 			styleFirst.loadFromFile("style/arcad1.png");
-			styleSecond.loadFromFile("style/arcad.png");
+			styleSecond.loadFromFile("style/arcad2.png");
 			styleThird.loadFromFile("style/arcad.png");
 			styleFourth.loadFromFile("style/arcad.png");
 		}
@@ -1049,7 +1052,7 @@ void arcad(char& inputArcad, gameState& state, int page = 1) {
 			break;
 		}
 
-		displayArcadWindow(ArcadWindow, inputArcad, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
+		displayArcadWindow(ArcadWindow, inputArcad, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page, checkSound);
 
 		if (state != ARCAD) {
 			break;
@@ -1083,6 +1086,30 @@ void menuBar(sf::RenderWindow& menu, int& headX, int& headY, char& input, int& o
 
 	sf::Texture buttonBackClick;
 	if (!buttonBackClick.loadFromFile("backgroundTexture/layer4.png")) {
+		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	sf::Texture buttonFullSoundNormal;
+	if(!buttonFullSoundNormal.loadFromFile("backgroundTexture/secondSoundTexture/Second_soundIcon1.png")){
+		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	sf::Texture buttonFullSoundClick;
+	if (!buttonFullSoundClick.loadFromFile("backgroundTexture/secondSoundTexture/Second_soundIcon12.png")) {
+		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	sf::Texture buttonNullSoundNormal;
+	if (!buttonNullSoundNormal.loadFromFile("backgroundTexture/secondSoundTexture/Second_soundIcon2.png")) {
+		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	sf::Texture buttonNullSoundClick;
+	if (!buttonNullSoundClick.loadFromFile("backgroundTexture/secondSoundTexture/Second_soundIcon21.png")) {
 		std::cerr << RED_TEXT << "Error loading image file" << RESET_TEXT << std::endl;
 		return;
 	}
@@ -1135,6 +1162,15 @@ void menuBar(sf::RenderWindow& menu, int& headX, int& headY, char& input, int& o
 	exitTest.setPosition({ 960, 950 });
 	exitTest.setOrigin({ 250, 60 });
 
+	Button soundTest("sound", { 150, 130 }, 80, sf::Color::White);
+	if (!checkSound) {
+		soundTest.setTexture(buttonFullSoundNormal);
+	}
+	else {
+		soundTest.setTexture(buttonNullSoundNormal);
+	}
+	soundTest.setPosition({ 1810, 990 });
+
 	while (menu.isOpen()) {
 		sf::Event event;
 		while (menu.pollEvent(event)) {
@@ -1145,31 +1181,46 @@ void menuBar(sf::RenderWindow& menu, int& headX, int& headY, char& input, int& o
 					if (startTest.mousePosition(menu)) {
 						startTest.setPressed(true);
 						startTest.textureUpdate(menu, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 
 					if (styleTest.mousePosition(menu)) {
 						styleTest.setPressed(true);
 						styleTest.textureUpdate(menu, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 
 					if (arcadTest.mousePosition(menu)) {
 						arcadTest.setPressed(true);
 						arcadTest.textureUpdate(menu, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 
 					if (recordTest.mousePosition(menu)) {
 						recordTest.setPressed(true);
 						recordTest.textureUpdate(menu, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
 					}
 
 					if (exitTest.mousePosition(menu)) {
 						exitTest.setPressed(true);
 						exitTest.textureUpdate(menu, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						soundBotton(checkSound);
+					}
+
+					if (!checkSound) {
+						if (soundTest.mousePosition(menu)) {
+							soundTest.setPressed(true);
+							soundTest.textureUpdate(menu, buttonNullSoundClick, buttonNullSoundNormal);
+							soundBotton(checkSound);
+						}
+					}
+					if (checkSound) {
+						if (soundTest.mousePosition(menu)) {
+							soundTest.setPressed(true);
+							soundTest.textureUpdate(menu, buttonFullSoundClick, buttonFullSoundNormal);
+							soundBotton(checkSound);
+						}
 					}
 				}
 			}
@@ -1228,7 +1279,35 @@ void menuBar(sf::RenderWindow& menu, int& headX, int& headY, char& input, int& o
 						exitTest.setPressed(false);
 						exitTest.textureUpdate(menu, buttonBackClick, buttonBackNormal);
 						sf::sleep(sf::milliseconds(120));
-						menu.close();  
+						menu.close();
+					}
+				}
+			}
+
+			if (!checkSound) {
+				if (event.type == sf::Event::MouseButtonReleased) {
+					if (event.mouseButton.button == sf::Mouse::Left) {
+						if (soundTest.getPressed()) {
+							soundTest.setPressed(false);
+							soundTest.textureUpdate(menu, buttonNullSoundClick, buttonNullSoundNormal);
+							sf::sleep(sf::milliseconds(120));
+							soundTest.setTexture(buttonNullSoundNormal);
+							checkSound = true;
+						}
+					}
+				}
+			}
+
+			if (checkSound) {
+				if (event.type == sf::Event::MouseButtonReleased) {
+					if (event.mouseButton.button == sf::Mouse::Left) {
+						if (soundTest.getPressed()) {
+							soundTest.setPressed(false);
+							soundTest.textureUpdate(menu, buttonFullSoundClick, buttonFullSoundNormal);
+							sf::sleep(sf::milliseconds(120));
+							soundTest.setTexture(buttonFullSoundNormal);
+							checkSound = false;
+						}
 					}
 				}
 			}
@@ -1238,6 +1317,7 @@ void menuBar(sf::RenderWindow& menu, int& headX, int& headY, char& input, int& o
 			arcadTest.update(menu);
 			recordTest.update(menu);
 			exitTest.update(menu);
+			soundTest.update(menu);
 
 			menu.clear();
 
@@ -1250,6 +1330,7 @@ void menuBar(sf::RenderWindow& menu, int& headX, int& headY, char& input, int& o
 			arcadTest.drawTo(menu);
 			recordTest.drawTo(menu);
 			exitTest.drawTo(menu);
+			soundTest.drawTo(menu);
 
 			menu.display();
 		}
@@ -1257,6 +1338,8 @@ void menuBar(sf::RenderWindow& menu, int& headX, int& headY, char& input, int& o
 }
 
 int main() {
+	srand(time(NULL));
+
 	int headX, headY;
 	int offsetX = 0;
 	int offsetY = 0;

@@ -1,6 +1,10 @@
 #include "Arcad1.h"
+#include "Arcad2.h"
 #include "Sounds.h"
 #include <iostream>
+
+sf::Clock unFoodTimer;
+sf::Time unFoodElapsed;
 
 std::vector<std::vector<char>> firstField() {
 	const char* customField[] = {
@@ -40,13 +44,12 @@ std::vector<std::vector<char>> firstField() {
 void food(std::vector<std::vector<char>>& firstField) {
 	int rows = firstField.size();
 	int cols = firstField[0].size();
-	srand(time(NULL));
 
 	std::vector<std::pair<int, int>> freePositions;
 
 	for (int i = 1; i < rows - 1; ++i) {
 		for (int j = 1; j < cols - 1; ++j) {
-			if (firstField[i][j] != 'O' && firstField[i][j] != '1') {
+			if (firstField[i][j] != 'O' && firstField[i][j] != '1' && firstField[i][j] != '2') {
 				freePositions.push_back({ i, j });
 			}
 		}
@@ -71,7 +74,7 @@ bool foodCheck(std::vector<std::vector<char>>& firstField) {
 	return false;
 }
 
-void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake) {
+void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake, bool checkSound) {
 	switch (dir) {
 	case left: headY -= 1; break;
 	case right: headY += 1; break;
@@ -81,14 +84,14 @@ void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snak
 
 	if (headX < 0 || headX >= rows || headY < 0 || headY >= cols || firstField[headX][headY] == '1' || firstField[headX][headY] == 'O') {
 		music.stop();
-		endSound();
+		endSound(checkSound);
 		state = END;
 		return;
 	}
 
 	if (firstField[headX][headY] == '@') {
 		snakeLength++;
-		foodSound();
+		foodSound(checkSound);
 		food(firstField);
 		++foodIndex;
 	}
@@ -107,13 +110,21 @@ void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snak
 	}
 }
 
-void chooceArcad(char& inputArcad, sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake) {
+void chooceArcad(char& inputArcad, sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake, bool checkSound) {
 	switch (inputArcad) {
 	case '1':
-		firstArcadLogic(window, headX, headY, snakeLength, state, firstField, snake);
+		firstArcadLogic(window, headX, headY, snakeLength, state, firstField, snake, checkSound);
+		break;
+	case '2':
+		secondArcadLogic(window, headX, headY, snakeLength, state, firstField, snake, checkSound);
+		unFoodElapsed = unFoodTimer.getElapsedTime();
+		if (unFoodElapsed.asSeconds() >= 3.2f) {
+			unFood(firstField);
+			unFoodTimer.restart();
+		}
 		break;
 	default:
-		firstArcadLogic(window, headX, headY, snakeLength, state, firstField, snake);
+		firstArcadLogic(window, headX, headY, snakeLength, state, firstField, snake, checkSound);
 		break;
 	}
 }

@@ -10,10 +10,10 @@ extern sf::Music music;
 extern sf::Music endMusic;
 extern sf::SoundBuffer buffer;
 
-void foodSound();
+void foodSound(bool checkSound);
 
-void endSound();
+void endSound(bool checkSound);
 
-void mainSound();
+void mainSound(bool checkSound);
 
-void soundBotton();
+void soundBotton(bool checkSound);

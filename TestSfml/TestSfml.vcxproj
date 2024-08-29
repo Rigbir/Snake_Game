@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Arcad1.cpp" />
+    <ClCompile Include="Arcad2.cpp" />
     <ClCompile Include="ArcadSettings.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="main.cpp" />
@@ -148,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arcad1.h" />
+    <ClInclude Include="Arcad2.h" />
     <ClInclude Include="Arcad_manger.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CursorTexture.h" />

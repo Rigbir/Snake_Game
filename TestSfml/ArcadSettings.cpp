@@ -4,7 +4,9 @@
 
 static sf::SoundBuffer buffer3;
 
-void soundBottonThird() {
+void soundBottonThird(bool checkSound) {
+	if (checkSound) return;
+
 	if (!buffer3.loadFromFile("Music/menuChoice.wav")) {
 		return;
 	}
@@ -14,7 +16,7 @@ void soundBottonThird() {
 	bottonSound3.play();
 }
 
-void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page) {
+void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page, bool checkSound) {
 	
 	sf::Font font;
 	if (!font.loadFromFile("font/ArcadeClassic.ttf")) {
@@ -80,34 +82,34 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					if (first.mousePosition(window)) {
 						first.setPressed(true);
-						soundBottonThird();
+						soundBottonThird(checkSound);
 					}
 
 					if (second.mousePosition(window)) {
 						second.setPressed(true);
-						soundBottonThird();
+						soundBottonThird(checkSound);
 					}
 
 					if (third.mousePosition(window)) {
 						third.setPressed(true);
-						soundBottonThird();
+						soundBottonThird(checkSound);
 					}
 
 					if (fourth.mousePosition(window)) {
 						fourth.setPressed(true);
-						soundBottonThird();
+						soundBottonThird(checkSound);
 					}
 
 					if (nextButton.mousePosition(window)) {
 						nextButton.setPressed(true);
 						nextButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
-						soundBottonThird();
+						soundBottonThird(checkSound);
 					}
 
 					if (backButton.mousePosition(window)) {
 						backButton.setPressed(true);
 						backButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
-						soundBottonThird();
+						soundBottonThird(checkSound);
 					}
 				}
 			}
@@ -134,7 +136,7 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 							inputArcad = '6';
 						std::cout << "Input value style: " << inputArcad << std::endl;
 						window.close();
-						state = START;
+						state = STYLE;
 					}
 					else if (third.getPressed()) {
 						third.setPressed(false);

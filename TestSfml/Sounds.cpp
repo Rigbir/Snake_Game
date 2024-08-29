@@ -7,7 +7,9 @@ sf::Music music;
 sf::Music endMusic;
 sf::SoundBuffer buffer;
 
-void foodSound() {
+void foodSound(bool checkSound) {
+	if (checkSound) return;
+
 	if (!buffer.loadFromFile("Music/SoundMoney.wav")) {
 		std::cerr << RED_TEXT << "Error loading sound file" << RESET_TEXT << std::endl;
 		return;
@@ -18,7 +20,9 @@ void foodSound() {
 	eatSound.play();
 }
 
-void endSound() {
+void endSound(bool checkSound) {
+	if (checkSound) return;
+
 	if (!endMusic.openFromFile("Music/gameOver.wav")) {
 		std::cerr << RED_TEXT << "Error loading sound file" << RESET_TEXT << std::endl;
 		return;
@@ -27,7 +31,9 @@ void endSound() {
 	endMusic.play();
 }
 
-void mainSound() {
+void mainSound(bool checkSound) {
+	if (checkSound) return;
+
 	if (!music.openFromFile("Music/electro.wav")) {
 		std::cerr << RED_TEXT << "Error loading sound file" << RESET_TEXT << std::endl;
 		return;
@@ -36,7 +42,9 @@ void mainSound() {
 	music.play();
 }
 
-void soundBotton() {
+void soundBotton(bool checkSound) {
+	if (checkSound) return;
+
 	if (!buffer.loadFromFile("Music/menuChoice.wav")) {
 		std::cerr << RED_TEXT << "Error loading sound file" << RESET_TEXT << std::endl;
 		return;

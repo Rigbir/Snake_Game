@@ -4,7 +4,9 @@
 
 static sf::SoundBuffer buffer2;
 
-void soundBottonSecond() {
+void soundBottonSecond(bool checkSound) {
+	if (checkSound) return;
+
 	if (!buffer2.loadFromFile("Music/menuChoice.wav")) {
 		return;
 	}
@@ -14,7 +16,7 @@ void soundBottonSecond() {
 	bottonSound2.play();
 }
 
-void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page) {
+void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page, bool checkSound) {
 
 	sf::Font font;
 	if (!font.loadFromFile("font/ArcadeClassic.ttf")) {
@@ -80,34 +82,34 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					if (first.mousePosition(window)) {
 						first.setPressed(true);
-						soundBottonSecond();
+						soundBottonSecond(checkSound);
 					}
 
 					if (second.mousePosition(window)) {
 						second.setPressed(true);
-						soundBottonSecond();
+						soundBottonSecond(checkSound);
 					}
 
 					if (third.mousePosition(window)) {
 						third.setPressed(true);
-						soundBottonSecond();
+						soundBottonSecond(checkSound);
 					}
 
 					if (fourth.mousePosition(window)) {
 						fourth.setPressed(true);
-						soundBottonSecond();
+						soundBottonSecond(checkSound);
 					}
 
 					if (nextButton.mousePosition(window)) {
 						nextButton.setPressed(true);
 						nextButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
-						soundBottonSecond();
+						soundBottonSecond(checkSound);
 					}
 
 					if (backButton.mousePosition(window)) {
 						backButton.setPressed(true);
 						backButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
-						soundBottonSecond();
+						soundBottonSecond(checkSound);
 					}
 				}
 			}

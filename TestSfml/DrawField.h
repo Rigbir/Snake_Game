@@ -19,6 +19,15 @@ void drawBlackField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 	float scaleY = static_cast<float>(35) / food.getSize().y;
 	spriteFood.setScale(scaleX, scaleY);
 
+	sf::Texture barierTime;
+	if (!barierTime.loadFromFile("firstSnakeTexture/poison.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Sprite spriteBarierTime;
+	spriteBarierTime.setTexture(barierTime);
+
 	for (int i = 0; i < 20; ++i) {
 		for (int j = 0; j < 25; ++j) {
 			sf::RectangleShape rectangle(sf::Vector2f(35, 35));
@@ -32,6 +41,11 @@ void drawBlackField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 				window.draw(spriteFood);
 				continue;
 			}
+			else if (field[i][j] == '2') {
+				spriteBarierTime.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+				window.draw(spriteBarierTime);
+				continue;
+			}
 			else {
 				rectangle.setFillColor(sf::Color::Black);
 			}
@@ -43,18 +57,18 @@ void drawBlackField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 
 void drawGreenField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
 
-	sf::Texture food;
-	if (!food.loadFromFile("fifthSnakeTexture/icon1.png")) {
+	sf::Texture food[8];
+	if (!food[0].loadFromFile("fifthSnakeTexture/food.png") ||
+		!food[1].loadFromFile("fifthSnakeTexture/food1.png") ||
+		!food[2].loadFromFile("fifthSnakeTexture/food2.png") ||
+		!food[3].loadFromFile("fifthSnakeTexture/food3.png") ||
+		!food[4].loadFromFile("fifthSnakeTexture/food4.png") ||
+		!food[5].loadFromFile("fifthSnakeTexture/food5.png") ||
+		!food[6].loadFromFile("fifthSnakeTexture/food6.png") ||
+		!food[7].loadFromFile("fifthSnakeTexture/food7.png")) {
 		std::cerr << "Error loading texture file" << std::endl;
 		return;
 	}
-
-	sf::Sprite spriteFood;
-	spriteFood.setTexture(food);
-
-	float scaleX = static_cast<float>(35) / food.getSize().x;
-	float scaleY = static_cast<float>(35) / food.getSize().y;
-	spriteFood.setScale(scaleX, scaleY);
 
 	sf::Texture fieldTexture;
 	if (!fieldTexture.loadFromFile("fifthSnakeTexture/field.png")) {
@@ -64,6 +78,24 @@ void drawGreenField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 
 	sf::Sprite spriteField;
 	spriteField.setTexture(fieldTexture);
+
+	sf::Texture barier;
+	if (!barier.loadFromFile("fifthSnakeTexture/barier.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Sprite spriteBarier;
+	spriteBarier.setTexture(barier);
+
+	sf::Texture barierTime;
+	if (!barierTime.loadFromFile("fifthSnakeTexture/grave.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Sprite spriteBarierTime;
+	spriteBarierTime.setTexture(barierTime);
 
 	sf::Texture textures[8];
 	if (!textures[0].loadFromFile("fifthSnakeTexture/fieldBorderDown.png") ||
@@ -81,6 +113,7 @@ void drawGreenField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 	for (int i = 0; i < 20; ++i) {
 		for (int j = 0; j < 25; ++j) {
 			sf::Sprite spriteBorder;
+			sf::Sprite spriteFood;
 
 			if (i == 0 && j == 0) {
 				spriteBorder.setTexture(textures[7]);
@@ -107,8 +140,38 @@ void drawGreenField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 				spriteBorder.setTexture(textures[2]);
 			}
 			else if (field[i][j] == '@') {
-				spriteFood.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
-				window.draw(spriteFood);
+				if (foodIndex < 8) {
+					spriteFood.setTexture(food[foodIndex]);
+
+					float scaleX = static_cast<float>(35) / food[foodIndex].getSize().x;
+					float scaleY = static_cast<float>(35) / food[foodIndex].getSize().y;
+					spriteFood.setScale(scaleX, scaleY);
+
+					spriteFood.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+					window.draw(spriteFood);
+					continue;
+				}
+				else if (foodIndex == 8) {
+					foodIndex = 0;
+					spriteFood.setTexture(food[foodIndex]);
+
+					float scaleX = static_cast<float>(35) / food[foodIndex].getSize().x;
+					float scaleY = static_cast<float>(35) / food[foodIndex].getSize().y;
+					spriteFood.setScale(scaleX, scaleY);
+
+					spriteFood.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+					window.draw(spriteFood);
+					continue;
+				}
+			}
+			else if (field[i][j] == '1') {
+				spriteBarier.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+				window.draw(spriteBarier);
+				continue;
+			}
+			else if (field[i][j] == '2') {
+				spriteBarierTime.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+				window.draw(spriteBarierTime);
 				continue;
 			}
 			else {
@@ -160,6 +223,24 @@ void drawGreyField(sf::RenderWindow& window, std::vector<std::vector<char>>& fie
 		return;
 	}
 
+	sf::Texture barier;
+	if (!barier.loadFromFile("sixSnakeTexture/barier.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Sprite spriteBarier;
+	spriteBarier.setTexture(barier);
+
+	sf::Texture barierTime;
+	if (!barierTime.loadFromFile("sixSnakeTexture/asteroid2.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Sprite spriteBarierTime;
+	spriteBarierTime.setTexture(barierTime);
+
 	for (int i = 0; i < 20; ++i) {
 		for (int j = 0; j < 25; ++j) {
 			sf::Sprite spriteBorder;
@@ -192,6 +273,16 @@ void drawGreyField(sf::RenderWindow& window, std::vector<std::vector<char>>& fie
 			else if (field[i][j] == '@') {
 				spriteFood.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
 				window.draw(spriteFood);
+				continue;
+			}
+			else if (field[i][j] == '1') {
+				spriteBarier.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+				window.draw(spriteBarier);
+				continue;
+			}
+			else if (field[i][j] == '2') {
+				spriteBarierTime.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+				window.draw(spriteBarierTime);
 				continue;
 			}
 			else {
@@ -257,6 +348,15 @@ void drawSpaceField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 	sf::Sprite spriteBarier;
 	spriteBarier.setTexture(barier);
 
+	sf::Texture barierTime;
+	if (!barierTime.loadFromFile("sevenSnakeTexture/asteroid.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Sprite spriteBarierTime;
+	spriteBarierTime.setTexture(barierTime);
+
 	for (int i = 0; i < 20; ++i) {
 		for (int j = 0; j < 25; ++j) {
 			sf::Sprite spriteBorder;
@@ -315,6 +415,11 @@ void drawSpaceField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 			else if (field[i][j] == '1') {
 				spriteBarier.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
 				window.draw(spriteBarier);
+				continue;
+			}
+			else if (field[i][j] == '2') {
+				spriteBarierTime.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+				window.draw(spriteBarierTime);
 				continue;
 			}
 			else {
