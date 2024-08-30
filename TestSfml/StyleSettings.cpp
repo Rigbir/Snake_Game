@@ -4,7 +4,7 @@
 
 static sf::SoundBuffer buffer2;
 
-void soundBottonSecond(bool checkSound) {
+void soundBottonSecond() {
 	if (checkSound) return;
 
 	if (!buffer2.loadFromFile("Music/menuChoice.wav")) {
@@ -16,7 +16,7 @@ void soundBottonSecond(bool checkSound) {
 	bottonSound2.play();
 }
 
-void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page, bool checkSound) {
+void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page) {
 
 	sf::Font font;
 	if (!font.loadFromFile("font/ArcadeClassic.ttf")) {
@@ -74,6 +74,14 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 	backButton.setPosition({ 770, 890 });
 	backButton.setOrigin({ 150, 45 });
 
+	Button menuButton("menu", { 300, 100 }, 65, sf::Color::White);
+	menuButton.setFont(font);
+	menuButton.setTextStyle();
+	menuButton.setTextOutline(2.0f);
+	menuButton.setTexture(buttonBackNormal);
+	menuButton.setPosition({ windowSize.x / 2.0f, 1005 });
+	menuButton.setOrigin({ 150, 45 });
+
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
@@ -82,34 +90,40 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					if (first.mousePosition(window)) {
 						first.setPressed(true);
-						soundBottonSecond(checkSound);
+						soundBottonSecond();
 					}
 
 					if (second.mousePosition(window)) {
 						second.setPressed(true);
-						soundBottonSecond(checkSound);
+						soundBottonSecond();
 					}
 
 					if (third.mousePosition(window)) {
 						third.setPressed(true);
-						soundBottonSecond(checkSound);
+						soundBottonSecond();
 					}
 
 					if (fourth.mousePosition(window)) {
 						fourth.setPressed(true);
-						soundBottonSecond(checkSound);
+						soundBottonSecond();
 					}
 
 					if (nextButton.mousePosition(window)) {
 						nextButton.setPressed(true);
 						nextButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
-						soundBottonSecond(checkSound);
+						soundBottonSecond();
 					}
 
 					if (backButton.mousePosition(window)) {
 						backButton.setPressed(true);
 						backButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
-						soundBottonSecond(checkSound);
+						soundBottonSecond();
+					}
+
+					if (menuButton.mousePosition(window)) {
+						menuButton.setPressed(true);
+						menuButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
+						soundBottonSecond();
 					}
 				}
 			}
@@ -124,6 +138,7 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 						else if (page == 2)
 							inputStyle = '5';
 						std::cout << "Input value style: " << inputStyle << std::endl;
+						checkButton = true;
 						window.close();
 						state = START;
 					}
@@ -135,6 +150,7 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 						else if (page == 2)
 							inputStyle = '6';
 						std::cout << "Input value style: " << inputStyle << std::endl;
+						checkButton = true;
 						window.close();
 						state = START;
 					}
@@ -146,6 +162,7 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 						else if (page == 2)
 							inputStyle = '7';
 						std::cout << "Input value style: " << inputStyle << std::endl;
+						checkButton = true;
 						window.close();
 						state = START;
 					}
@@ -157,6 +174,7 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 						else if (page == 2)
 							inputStyle = '8';
 						std::cout << "Input value style: " << inputStyle << std::endl;
+						checkButton = true;
 						window.close();
 						state = START;
 					}
@@ -174,6 +192,14 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 						page--;
 						window.close();
 					}
+					else if (menuButton.getPressed()) {
+						menuButton.setPressed(false);
+						menuButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
+						sf::sleep(sf::milliseconds(120));
+						checkButton = false;
+						window.close();
+						state = MENU;
+					}
 				}
 			}
 
@@ -188,6 +214,7 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 				nextButton.update(window);
 				backButton.update(window);
 			}
+			menuButton.update(window);
 
 			window.clear();
 
@@ -205,6 +232,7 @@ void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& s
 				nextButton.drawTo(window);
 				backButton.drawTo(window);
 			}
+			menuButton.drawTo(window);
 
 			window.display();
 		}

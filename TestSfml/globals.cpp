@@ -5,5 +5,11 @@ int rows = 20;
 int cols = 25;
 int foodIndex = 0;
 int snakeLength = 1;
+
 direction dir = right;
 speed sp = second;
+
+bool checkButton = false;
+bool checkSound = false;
+bool checkEnd = false;
+bool isStyleChosen = false;

@@ -34,11 +34,6 @@
 
 #define RESET_TEXT "\033[0m"
 
-bool isStyleChosen = false;
-bool checkButton = false;
-bool checkEnd = false;
-bool checkSound = false;
-
 void endGame(int& snakeLength, gameState& state);
 
 std::vector<std::vector<char>> barier() {
@@ -404,31 +399,31 @@ void startGame(char& input, gameState& state) {
 					if (first.mousePosition(start)) {
 						first.setPressed(true);
 						first.textureUpdate(start, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 
 					if (second.mousePosition(start)) {
 						second.setPressed(true);
 						second.textureUpdate(start, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 
 					if (third.mousePosition(start)) {
 						third.setPressed(true);
 						third.textureUpdate(start, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 
 					if (fourth.mousePosition(start)) {
 						fourth.setPressed(true);
 						fourth.textureUpdate(start, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 
 					if (dynamic.mousePosition(start)) {
 						dynamic.setPressed(true);
 						dynamic.textureUpdate(start, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 				}
 			}
@@ -545,7 +540,7 @@ void style(char& inputStyle, gameState& state, int page = 1) {
 			break;
 		}
 
-		displayStyleWindow(styleWindow, inputStyle, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page, checkSound);
+		displayStyleWindow(styleWindow, inputStyle, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
 		
 		if (state != STYLE) {
 			break;
@@ -645,13 +640,13 @@ void endGame(int& snakeLength, gameState& state) {
 					if (restart.mousePosition(end)) {
 						restart.setPressed(true);
 						restart.textureUpdate(end, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 
 					if (menu.mousePosition(end)) {
 						menu.setPressed(true);
 						menu.textureUpdate(end, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 				}
 			}
@@ -757,7 +752,7 @@ void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, in
 		break;
 	}
 
-	mainSound(checkSound);
+	mainSound();
 
 	speedDirection(snakeLength, input);
 	startPosition(field, headX, headY, snake);
@@ -967,7 +962,7 @@ void recordMenu(gameState& state, int& firstRecord, int& secondRecord, int& thir
 					if (menu.mousePosition(record)) {
 						menu.setPressed(true);
 						menu.textureUpdate(record, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 				}
 			}
@@ -977,7 +972,7 @@ void recordMenu(gameState& state, int& firstRecord, int& secondRecord, int& thir
 					if (menu.getPressed()) {
 						menu.setPressed(false);
 						menu.textureUpdate(record, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 						record.close();
 						state = MENU;
 					}
@@ -1052,7 +1047,7 @@ void arcad(char& inputArcad, gameState& state, int page = 1) {
 			break;
 		}
 
-		displayArcadWindow(ArcadWindow, inputArcad, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page, checkSound);
+		displayArcadWindow(ArcadWindow, inputArcad, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
 
 		if (state != ARCAD) {
 			break;
@@ -1181,45 +1176,45 @@ void menuBar(sf::RenderWindow& menu, int& headX, int& headY, char& input, int& o
 					if (startTest.mousePosition(menu)) {
 						startTest.setPressed(true);
 						startTest.textureUpdate(menu, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 
 					if (styleTest.mousePosition(menu)) {
 						styleTest.setPressed(true);
 						styleTest.textureUpdate(menu, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 
 					if (arcadTest.mousePosition(menu)) {
 						arcadTest.setPressed(true);
 						arcadTest.textureUpdate(menu, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 
 					if (recordTest.mousePosition(menu)) {
 						recordTest.setPressed(true);
 						recordTest.textureUpdate(menu, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 
 					if (exitTest.mousePosition(menu)) {
 						exitTest.setPressed(true);
 						exitTest.textureUpdate(menu, buttonBackClick, buttonBackNormal);
-						soundBotton(checkSound);
+						soundBotton();
 					}
 
 					if (!checkSound) {
 						if (soundTest.mousePosition(menu)) {
 							soundTest.setPressed(true);
 							soundTest.textureUpdate(menu, buttonNullSoundClick, buttonNullSoundNormal);
-							soundBotton(checkSound);
+							soundBotton();
 						}
 					}
 					if (checkSound) {
 						if (soundTest.mousePosition(menu)) {
 							soundTest.setPressed(true);
 							soundTest.textureUpdate(menu, buttonFullSoundClick, buttonFullSoundNormal);
-							soundBotton(checkSound);
+							soundBotton();
 						}
 					}
 				}
@@ -1382,7 +1377,6 @@ int main() {
 			break;
 		case STYLE:
 			style(inputStyle, state);
-			checkButton = true;
 			break;
 		case ARCAD:
 			arcad(inputArcad, state);

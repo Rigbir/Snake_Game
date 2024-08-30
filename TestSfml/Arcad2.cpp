@@ -77,14 +77,14 @@ void secondArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& sna
 
 	if (headX < 0 || headX >= rows || headY < 0 || headY >= cols || secondField[headX][headY] == '1' || secondField[headX][headY] == 'O') {
 		music.stop();
-		endSound(checkSound);
+		endSound();
 		state = END;
 		return;
 	}
 
 	if (secondField[headX][headY] == '@') {
 		snakeLength++;
-		foodSound(checkSound);
+		foodSound();
 		food(secondField);
 		++foodIndex;
 	}
@@ -95,11 +95,11 @@ void secondArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& sna
 
 	if (secondField[headX][headY] == '2') {
 		snakeLength--;
-		foodSound(checkSound);
+		foodSound();
 
 		if (snakeLength < 1) {
 			music.stop();
-			endSound(checkSound);
+			endSound();
 			state = END;
 			return;
 		}

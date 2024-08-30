@@ -7,7 +7,7 @@ sf::Music music;
 sf::Music endMusic;
 sf::SoundBuffer buffer;
 
-void foodSound(bool checkSound) {
+void foodSound() {
 	if (checkSound) return;
 
 	if (!buffer.loadFromFile("Music/SoundMoney.wav")) {
@@ -20,7 +20,7 @@ void foodSound(bool checkSound) {
 	eatSound.play();
 }
 
-void endSound(bool checkSound) {
+void endSound() {
 	if (checkSound) return;
 
 	if (!endMusic.openFromFile("Music/gameOver.wav")) {
@@ -31,7 +31,7 @@ void endSound(bool checkSound) {
 	endMusic.play();
 }
 
-void mainSound(bool checkSound) {
+void mainSound() {
 	if (checkSound) return;
 
 	if (!music.openFromFile("Music/electro.wav")) {
@@ -42,7 +42,7 @@ void mainSound(bool checkSound) {
 	music.play();
 }
 
-void soundBotton(bool checkSound) {
+void soundBotton() {
 	if (checkSound) return;
 
 	if (!buffer.loadFromFile("Music/menuChoice.wav")) {

@@ -4,7 +4,7 @@
 
 static sf::SoundBuffer buffer3;
 
-void soundBottonThird(bool checkSound) {
+void soundBottonThird() {
 	if (checkSound) return;
 
 	if (!buffer3.loadFromFile("Music/menuChoice.wav")) {
@@ -16,7 +16,7 @@ void soundBottonThird(bool checkSound) {
 	bottonSound3.play();
 }
 
-void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page, bool checkSound) {
+void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page) {
 	
 	sf::Font font;
 	if (!font.loadFromFile("font/ArcadeClassic.ttf")) {
@@ -74,6 +74,14 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 	backButton.setPosition({ 770, 890 });
 	backButton.setOrigin({ 150, 45 });
 
+	Button menuButton("menu", { 300, 100 }, 65, sf::Color::White);
+	menuButton.setFont(font);
+	menuButton.setTextStyle();
+	menuButton.setTextOutline(2.0f);
+	menuButton.setTexture(buttonBackNormal);
+	menuButton.setPosition({ windowSize.x / 2.0f, 1005 });
+	menuButton.setOrigin({ 150, 45 });
+
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
@@ -82,34 +90,40 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					if (first.mousePosition(window)) {
 						first.setPressed(true);
-						soundBottonThird(checkSound);
+						soundBottonThird();
 					}
 
 					if (second.mousePosition(window)) {
 						second.setPressed(true);
-						soundBottonThird(checkSound);
+						soundBottonThird();
 					}
 
 					if (third.mousePosition(window)) {
 						third.setPressed(true);
-						soundBottonThird(checkSound);
+						soundBottonThird();
 					}
 
 					if (fourth.mousePosition(window)) {
 						fourth.setPressed(true);
-						soundBottonThird(checkSound);
+						soundBottonThird();
 					}
 
 					if (nextButton.mousePosition(window)) {
 						nextButton.setPressed(true);
 						nextButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
-						soundBottonThird(checkSound);
+						soundBottonThird();
 					}
 
 					if (backButton.mousePosition(window)) {
 						backButton.setPressed(true);
 						backButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
-						soundBottonThird(checkSound);
+						soundBottonThird();
+					}
+
+					if (menuButton.mousePosition(window)) {
+						menuButton.setPressed(true);
+						menuButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
+						soundBottonThird();
 					}
 				}
 			}
@@ -174,6 +188,13 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 						page--;
 						window.close();
 					}
+					else if (menuButton.getPressed()) {
+						menuButton.setPressed(false);
+						menuButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
+						sf::sleep(sf::milliseconds(120));
+						window.close();
+						state = MENU;
+					}
 				}
 			}
 
@@ -188,6 +209,7 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 				nextButton.update(window);
 				backButton.update(window);
 			}
+			menuButton.update(window);
 
 			window.clear();
 
@@ -205,6 +227,7 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 				nextButton.drawTo(window);
 				backButton.drawTo(window);
 			}
+			menuButton.drawTo(window);
 
 			window.display();
 		}

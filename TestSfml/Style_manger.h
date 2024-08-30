@@ -5,7 +5,8 @@
 #include <SFML/Audio.hpp>
 #include "Button.h"
 #include "gameState.h"
+#include "globals.h"
 
-void soundBottonSecond(bool checkSound);
+void soundBottonSecond();
 
-void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page, bool checkSound);
+void displayStyleWindow(sf::RenderWindow& window, char& inputStyle, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page);

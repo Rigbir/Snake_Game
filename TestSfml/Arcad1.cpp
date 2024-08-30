@@ -84,14 +84,14 @@ void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snak
 
 	if (headX < 0 || headX >= rows || headY < 0 || headY >= cols || firstField[headX][headY] == '1' || firstField[headX][headY] == 'O') {
 		music.stop();
-		endSound(checkSound);
+		endSound();
 		state = END;
 		return;
 	}
 
 	if (firstField[headX][headY] == '@') {
 		snakeLength++;
-		foodSound(checkSound);
+		foodSound();
 		food(firstField);
 		++foodIndex;
 	}

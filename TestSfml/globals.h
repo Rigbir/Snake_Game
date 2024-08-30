@@ -11,3 +11,8 @@ extern direction dir;
 
 extern enum speed { first = 30, second = 50, third = 100, fourth = 150, add = 75 };
 extern speed sp;
+
+extern bool checkButton;
+extern bool checkSound;
+extern bool checkEnd;
+extern bool isStyleChosen;
