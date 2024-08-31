@@ -434,6 +434,118 @@ void drawSpaceField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 	}
 }
 
+void drawCatField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+
+	sf::Texture food;
+	if (!food.loadFromFile("eightSnakeTexture/food.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Sprite spriteFood;
+	spriteFood.setTexture(food);
+
+	float scaleX = static_cast<float>(35) / food.getSize().x;
+	float scaleY = static_cast<float>(35) / food.getSize().y;
+	spriteFood.setScale(scaleX, scaleY);
+
+	sf::Texture fieldTexture;
+	if (!fieldTexture.loadFromFile("eightSnakeTexture/field4.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Sprite spriteField;
+	spriteField.setTexture(fieldTexture);
+
+	sf::Texture textures[8];
+	if (!textures[0].loadFromFile("eightSnakeTexture/fieldBorderDown.png") ||
+		!textures[1].loadFromFile("eightSnakeTexture/fieldBorderLeft.png") ||
+		!textures[2].loadFromFile("eightSnakeTexture/fieldBorderRight.png") ||
+		!textures[3].loadFromFile("eightSnakeTexture/fieldBorderTop.png") ||
+		!textures[4].loadFromFile("eightSnakeTexture/fieldLeftDown.png") ||
+		!textures[5].loadFromFile("eightSnakeTexture/fieldLeftUp.png") ||
+		!textures[6].loadFromFile("eightSnakeTexture/fieldRightDown.png") ||
+		!textures[7].loadFromFile("eightSnakeTexture/fieldRightUp.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Texture barier;
+	if (!barier.loadFromFile("eightSnakeTexture/barier.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Sprite spriteBarier;
+	spriteBarier.setTexture(barier);
+
+	sf::Texture barierTime;
+	if (!barierTime.loadFromFile("eightSnakeTexture/sausage.png")) {
+		std::cerr << "Error loading texture file" << std::endl;
+		return;
+	}
+
+	sf::Sprite spriteBarierTime;
+	spriteBarierTime.setTexture(barierTime);
+
+	for (int i = 0; i < 20; ++i) {
+		for (int j = 0; j < 25; ++j) {
+			sf::Sprite spriteBorder;
+
+			if (i == 0 && j == 0) {
+				spriteBorder.setTexture(textures[7]);
+			}
+			else if (i == 0 && j == 24) {
+				spriteBorder.setTexture(textures[5]);
+			}
+			else if (i == 19 && j == 0) {
+				spriteBorder.setTexture(textures[6]);
+			}
+			else if (i == 19 && j == 24) {
+				spriteBorder.setTexture(textures[4]);
+			}
+			else if (i == 0) {
+				spriteBorder.setTexture(textures[3]);
+			}
+			else if (i == 19) {
+				spriteBorder.setTexture(textures[0]);
+			}
+			else if (j == 0) {
+				spriteBorder.setTexture(textures[1]);
+			}
+			else if (j == 24) {
+				spriteBorder.setTexture(textures[2]);
+			}
+
+			else if (field[i][j] == '@') {
+				spriteFood.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+				window.draw(spriteFood);
+				continue;
+			}
+			else if (field[i][j] == '1') {
+				spriteBarier.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+				window.draw(spriteBarier);
+				continue;
+			}
+			else if (field[i][j] == '2') {
+				spriteBarierTime.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+				window.draw(spriteBarierTime);
+				continue;
+			}
+			else {
+				spriteField.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+				window.draw(spriteField);
+				continue;
+			}
+			
+			spriteBorder.setPosition(static_cast<float>(j * 35 + offsetX), static_cast<float>(i * 35 + offsetY - 120));
+			window.draw(spriteBorder);
+		}
+
+	}
+}
+
 void fieldChoose(char& inputStyle, sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
 
 	switch (inputStyle){
@@ -457,6 +569,9 @@ void fieldChoose(char& inputStyle, sf::RenderWindow& window, std::vector<std::ve
 		break;
 	case '7':
 		drawSpaceField(window, field, snake, offsetX, offsetY);
+		break;
+	case '8':
+		drawCatField(window, field, snake, offsetX, offsetY);
 		break;
 	}
 }

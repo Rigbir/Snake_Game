@@ -234,6 +234,39 @@ void sevenTexture() {
 	}
 }
 
+void eightTexture() {
+
+	if (!bodyVertical.loadFromFile("eightSnakeTexture/bodyVert.png") ||
+		!bodyHorizontal.loadFromFile("eightSnakeTexture/bodyHor.png") ||
+		!leftUp.loadFromFile("eightSnakeTexture/leftUp.png") ||
+		!rightUp.loadFromFile("eightSnakeTexture/rightUp.png") ||
+		!leftDown.loadFromFile("eightSnakeTexture/leftDown.png") ||
+		!rightDown.loadFromFile("eightSnakeTexture/rightDown.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	if (!headUp.loadFromFile("eightSnakeTexture/headUp1.png") ||
+		!headDown.loadFromFile("eightSnakeTexture/headDown1.png") ||
+		!headLeft.loadFromFile("eightSnakeTexture/headLeft1.png") ||
+		!headRight.loadFromFile("eightSnakeTexture/headRight1.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	if (!tailUp.loadFromFile("eightSnakeTexture/tailUp.png") ||
+		!tailLeft.loadFromFile("eightSnakeTexture/tailLeft.png") ||
+		!tailRight.loadFromFile("eightSnakeTexture/tailRight.png") ||
+		!tailDown.loadFromFile("eightSnakeTexture/tailDown.png")
+		) {
+		std::cerr << RED_TEXT << "Error loading texture file" << RESET_TEXT << std::endl;
+		return;
+	}
+}
+
+
 void styleChooce(char& inputStyle) {
 	switch (inputStyle)
 	{
@@ -257,6 +290,9 @@ void styleChooce(char& inputStyle) {
 		break;
 	case '7':
 		sevenTexture();
+		break;
+	case '8':
+		eightTexture();
 		break;
 	}
 }

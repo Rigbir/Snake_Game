@@ -534,7 +534,7 @@ void style(char& inputStyle, gameState& state, int page = 1) {
 			styleFirst.loadFromFile("style/style5.png");
 			styleSecond.loadFromFile("style/style6.png");
 			styleThird.loadFromFile("style/style7.png");
-			styleFourth.loadFromFile("style/loading.png");
+			styleFourth.loadFromFile("style/style8.png");
 		}
 		else if (page == 3) {
 			break;
