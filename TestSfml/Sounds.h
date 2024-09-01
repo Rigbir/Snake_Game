@@ -13,6 +13,8 @@ extern sf::SoundBuffer buffer;
 
 void foodSound();
 
+void punchSound();
+
 void endSound();
 
 void mainSound();

@@ -16,7 +16,7 @@ void soundBottonThird() {
 	bottonSound3.play();
 }
 
-void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page) {
+void displayArcadWindow(sf::RenderWindow& window, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page) {
 	
 	sf::Font font;
 	if (!font.loadFromFile("font/ArcadeClassic.ttf")) {
@@ -42,21 +42,21 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 	backgroundSpriteFirst.setPosition({ offX - 90, offY - 25 });
 	window.draw(backgroundSpriteFirst);
 
-	Button first("", { 432, 350 }, 65, sf::Color::White);
-	first.setTexture(styleFirst);
-	first.setPosition({ ((windowSize.x - styleFirst.getSize().x) / 2.0f) - 4, (windowSize.y - styleFirst.getSize().y) / 2.0f - 113 });
+	Button firstButton("", { 432, 350 }, 65, sf::Color::White);
+	firstButton.setTexture(styleFirst);
+	firstButton.setPosition({ ((windowSize.x - styleFirst.getSize().x) / 2.0f) - 4, (windowSize.y - styleFirst.getSize().y) / 2.0f - 113 });
 
-	Button second("", { 432, 350 }, 65, sf::Color::White);
-	second.setTexture(styleSecond);
-	second.setPosition({ ((windowSize.x - styleSecond.getSize().x) / 2.0f) + styleSecond.getSize().x - 3, ((windowSize.y - styleFirst.getSize().y) / 2.0f) - 113 });
+	Button secondButton("", { 432, 350 }, 65, sf::Color::White);
+	secondButton.setTexture(styleSecond);
+	secondButton.setPosition({ ((windowSize.x - styleSecond.getSize().x) / 2.0f) + styleSecond.getSize().x - 3, ((windowSize.y - styleFirst.getSize().y) / 2.0f) - 113 });
 
-	Button third("", { 432, 350 }, 65, sf::Color::White);
-	third.setTexture(styleThird);
-	third.setPosition({ ((windowSize.x - styleThird.getSize().x) / 2.0f) - 4, ((windowSize.y - styleThird.getSize().y) / 2.0f) + styleThird.getSize().y - 113 });
+	Button thirdButton("", { 432, 350 }, 65, sf::Color::White);
+	thirdButton.setTexture(styleThird);
+	thirdButton.setPosition({ ((windowSize.x - styleThird.getSize().x) / 2.0f) - 4, ((windowSize.y - styleThird.getSize().y) / 2.0f) + styleThird.getSize().y - 113 });
 
-	Button fourth("", { 432, 350 }, 65, sf::Color::White);
-	fourth.setTexture(styleFourth);
-	fourth.setPosition({ ((windowSize.x - styleThird.getSize().x) / 2.0f) + styleFourth.getSize().x - 3, ((windowSize.y - styleThird.getSize().y) / 2.0f) + styleFourth.getSize().y - 113 });
+	Button fourthButton("", { 432, 350 }, 65, sf::Color::White);
+	fourthButton.setTexture(styleFourth);
+	fourthButton.setPosition({ ((windowSize.x - styleThird.getSize().x) / 2.0f) + styleFourth.getSize().x - 3, ((windowSize.y - styleThird.getSize().y) / 2.0f) + styleFourth.getSize().y - 113 });
 
 	Button nextButton("Next", { 300, 100 }, 65, sf::Color::White);
 	nextButton.setFont(font);
@@ -88,23 +88,23 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 
 			if (event.type == sf::Event::MouseButtonPressed) {
 				if (event.mouseButton.button == sf::Mouse::Left) {
-					if (first.mousePosition(window)) {
-						first.setPressed(true);
+					if (firstButton.mousePosition(window)) {
+						firstButton.setPressed(true);
 						soundBottonThird();
 					}
 
-					if (second.mousePosition(window)) {
-						second.setPressed(true);
+					if (secondButton.mousePosition(window)) {
+						secondButton.setPressed(true);
 						soundBottonThird();
 					}
 
-					if (third.mousePosition(window)) {
-						third.setPressed(true);
+					if (thirdButton.mousePosition(window)) {
+						thirdButton.setPressed(true);
 						soundBottonThird();
 					}
 
-					if (fourth.mousePosition(window)) {
-						fourth.setPressed(true);
+					if (fourthButton.mousePosition(window)) {
+						fourthButton.setPressed(true);
 						soundBottonThird();
 					}
 
@@ -130,47 +130,47 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 
 			if (event.type == sf::Event::MouseButtonReleased) {
 				if (event.mouseButton.button == sf::Mouse::Left) {
-					if (first.getPressed()) {
-						first.setPressed(false);
+					if (firstButton.getPressed()) {
+						firstButton.setPressed(false);
 						sf::sleep(sf::milliseconds(100));
 						if (page == 1)
 							inputArcad = '1';
 						else if (page == 2)
 							inputArcad = '5';
-						std::cout << "Input value style: " << inputArcad << std::endl;
+						std::cout << "Input Arcad style: " << inputArcad << std::endl;
 						window.close();
 						state = STYLE;
 					}
-					else if (second.getPressed()) {
-						second.setPressed(false);
+					else if (secondButton.getPressed()) {
+						secondButton.setPressed(false);
 						sf::sleep(sf::milliseconds(100));
 						if (page == 1)
 							inputArcad = '2';
 						else if (page == 2)
 							inputArcad = '6';
-						std::cout << "Input value style: " << inputArcad << std::endl;
+						std::cout << "Input Arcad style: " << inputArcad << std::endl;
 						window.close();
 						state = STYLE;
 					}
-					else if (third.getPressed()) {
-						third.setPressed(false);
+					else if (thirdButton.getPressed()) {
+						thirdButton.setPressed(false);
 						sf::sleep(sf::milliseconds(100));
 						if (page == 1)
 							inputArcad = '3';
 						else if (page == 2)
 							inputArcad = '7';
-						std::cout << "Input value style: " << inputArcad << std::endl;
+						std::cout << "Input Arcad style: " << inputArcad << std::endl;
 						window.close();
-						state = START;
+						state = STYLE;
 					}
-					else if (fourth.getPressed()) {
-						fourth.setPressed(false);
+					else if (fourthButton.getPressed()) {
+						fourthButton.setPressed(false);
 						sf::sleep(sf::milliseconds(100));
 						if (page == 1)
 							inputArcad = '4';
 						else if (page == 2)
 							inputArcad = '8';
-						std::cout << "Input value style: " << inputArcad << std::endl;
+						std::cout << "Input Arcad style: " << inputArcad << std::endl;
 						window.close();
 						state = START;
 					}
@@ -198,10 +198,10 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 				}
 			}
 
-			first.styleUpdate(window);
-			second.styleUpdate(window);
-			third.styleUpdate(window);
-			fourth.styleUpdate(window);
+			firstButton.styleUpdate(window);
+			secondButton.styleUpdate(window);
+			thirdButton.styleUpdate(window);
+			fourthButton.styleUpdate(window);
 			if (page == 1) {
 				nextButton.update(window);
 			}
@@ -216,10 +216,10 @@ void displayArcadWindow(sf::RenderWindow& window, char& inputArcad, gameState& s
 			window.draw(backgroundSpriteSecond);
 			window.draw(backgroundSpriteFirst);
 
-			first.drawTo(window);
-			second.drawTo(window);
-			third.drawTo(window);
-			fourth.drawTo(window);
+			firstButton.drawTo(window);
+			secondButton.drawTo(window);
+			thirdButton.drawTo(window);
+			fourthButton.drawTo(window);
 			if (page == 1) {
 				nextButton.drawTo(window);
 			}

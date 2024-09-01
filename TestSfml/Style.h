@@ -266,8 +266,7 @@ void eightTexture() {
 	}
 }
 
-
-void styleChooce(char& inputStyle) {
+void styleChooce() {
 	switch (inputStyle)
 	{
 	case '1':

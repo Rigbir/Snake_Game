@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+
 extern int cellSize;
 extern int rows;
 extern int cols;
@@ -16,3 +18,15 @@ extern bool checkButton;
 extern bool checkSound;
 extern bool checkEnd;
 extern bool isStyleChosen;
+extern bool win;
+extern bool startKey;
+
+extern sf::Text textTime;
+extern sf::Clock levelTimer;
+
+extern int timeLevel;
+extern int foodForNextLevel;
+
+extern char input;
+extern char inputArcad;
+extern char inputStyle;

@@ -12,6 +12,6 @@ void food(std::vector<std::vector<char>>& field);
 
 bool foodCheck(std::vector<std::vector<char>>& field);
 
-void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, bool checkSound);
+void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake);
 
-void chooceArcad(char& inputArcad, sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, bool checkSound);
+void chooceArcad(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY);

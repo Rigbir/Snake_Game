@@ -546,7 +546,7 @@ void drawCatField(sf::RenderWindow& window, std::vector<std::vector<char>>& fiel
 	}
 }
 
-void fieldChoose(char& inputStyle, sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void fieldChoose(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
 
 	switch (inputStyle){
 	case '1':
@@ -572,6 +572,9 @@ void fieldChoose(char& inputStyle, sf::RenderWindow& window, std::vector<std::ve
 		break;
 	case '8':
 		drawCatField(window, field, snake, offsetX, offsetY);
+		break;
+	default:
+		drawBlackField(window, field, snake, offsetX, offsetY);
 		break;
 	}
 }

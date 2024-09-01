@@ -67,7 +67,7 @@ void unFood(std::vector<std::vector<char>>& secondField) {
 	}
 }
 
-void secondArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& secondField, std::vector<std::pair<int, int>>& snake, bool checkSound) {
+void secondArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& secondField, std::vector<std::pair<int, int>>& snake) {
 	switch (dir) {
 	case left: headY -= 1; break;
 	case right: headY += 1; break;
@@ -94,8 +94,20 @@ void secondArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& sna
 	}
 
 	if (secondField[headX][headY] == '2') {
-		snakeLength--;
-		foodSound();
+		int damage;
+
+		if (snakeLength <= 5) {
+			damage = 1;
+		}
+		else if (snakeLength > 5 && snakeLength <= 10) {
+			damage = 2;
+		}
+		else if (snakeLength > 10) {
+			damage = 3;
+		}
+
+		snakeLength -= damage;
+		punchSound();
 
 		if (snakeLength < 1) {
 			music.stop();
@@ -105,9 +117,11 @@ void secondArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& sna
 		}
 
 		if (snake.size() > snakeLength) {
-			std::pair<int, int> tail = snake.back();
-			snake.pop_back();
-			secondField[tail.first][tail.second] = ' ';
+			for (int i = 0; i < damage; ++i) {
+				std::pair<int, int> tail = snake.back();
+				snake.pop_back();
+				secondField[tail.first][tail.second] = ' ';
+			}
 		}
 	}
 

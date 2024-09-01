@@ -1,7 +1,7 @@
 #include "Arcad1.h"
 #include "Arcad2.h"
+#include "Arcad3.h"
 #include "Sounds.h"
-#include <iostream>
 
 sf::Clock unFoodTimer;
 sf::Time unFoodElapsed;
@@ -74,7 +74,7 @@ bool foodCheck(std::vector<std::vector<char>>& firstField) {
 	return false;
 }
 
-void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake, bool checkSound) {
+void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake) {
 	switch (dir) {
 	case left: headY -= 1; break;
 	case right: headY += 1; break;
@@ -110,21 +110,24 @@ void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snak
 	}
 }
 
-void chooceArcad(char& inputArcad, sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake, bool checkSound) {
+void chooceArcad(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
 	switch (inputArcad) {
 	case '1':
-		firstArcadLogic(window, headX, headY, snakeLength, state, firstField, snake, checkSound);
+		firstArcadLogic(window, headX, headY, snakeLength, state, firstField, snake);
 		break;
 	case '2':
-		secondArcadLogic(window, headX, headY, snakeLength, state, firstField, snake, checkSound);
+		secondArcadLogic(window, headX, headY, snakeLength, state, firstField, snake);
 		unFoodElapsed = unFoodTimer.getElapsedTime();
 		if (unFoodElapsed.asSeconds() >= 3.2f) {
 			unFood(firstField);
 			unFoodTimer.restart();
 		}
 		break;
+	case '3':
+		thirdArcadLogic(window, headX, headY, snakeLength, state, firstField, snake);
+		break;
 	default:
-		firstArcadLogic(window, headX, headY, snakeLength, state, firstField, snake, checkSound);
+		firstArcadLogic(window, headX, headY, snakeLength, state, firstField, snake);
 		break;
 	}
 }

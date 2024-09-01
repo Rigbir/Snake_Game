@@ -25,6 +25,7 @@
 
 #include "Arcad1.h"
 #include "Arcad2.h"
+#include "Arcad3.h"
 
 #define RED_TEXT "\033[1;31m"
 #define WHITE_TEXT "\033[1;37m"
@@ -66,43 +67,6 @@ void startPosition(std::vector<std::vector<char>>& field, int& headX, int& headY
 	}
 }
 
-void move(std::vector<std::vector<char>>& field, int& headX, int& headY, std::vector<std::pair<int, int>>& snake, int& snakeLength, sf::RenderWindow& window, gameState& state) {
-	
-	/*switch (dir) {
-	case left: headY -= 1; break;
-	case right: headY += 1; break;
-	case up: headX -= 1; break;
-	case down: headX += 1; break;
-	}
-
-	if (headX < 0 || headX >= rows || headY < 0 || headY >= cols || field[headX][headY] == '1' || field[headX][headY] == 'O') {
-		music.stop();
-		endSound();
-		state = END;
-		return;
-	}
-
-	if (field[headX][headY] == '@') {
-		snakeLength++;
-		foodSound();
-		food(field);
-		++foodIndex;
-	}
-
-	if (foodCheck(field) == false) {
-		food(field);
-	}
-
-	snake.insert(snake.begin(), { headX, headY });
-	field[headX][headY] = 'O';
-
-	if (snake.size() > snakeLength) {
-		std::pair<int, int> tail = snake.back();
-		snake.pop_back();
-		field[tail.first][tail.second] = ' ';
-	}*/
-}
-
 void dynamicSpeed(int& snakeLength) {
 	if (snakeLength < 4) sp = fourth;
 	else if (snakeLength >= 4 && snakeLength < 10) sp = third;
@@ -111,7 +75,7 @@ void dynamicSpeed(int& snakeLength) {
 	else if (snakeLength >= 20) sp = first;
 }
 
-void speedDirection(int& snakeLength, char& input) {
+void speedDirection(int& snakeLength) {
 	switch (input) {
 	case '1': sp = first; break;
 	case '2': sp = second; break;
@@ -150,16 +114,16 @@ void coundScore(sf::RenderWindow& window, int& snakeLength, sf::Font& font, std:
 	window.draw(text);
 }
 
-void chooseStyleOnce(char& inputStyle) {
+void chooseStyleOnce() {
 	if (!isStyleChosen) {
-		styleChooce(inputStyle);
+		styleChooce();
 		isStyleChosen = true;
 	}
 }
 
-void textureSnake(sf::RenderWindow& window, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY, char& inputStyle) {
+void textureSnake(sf::RenderWindow& window, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
 
-	chooseStyleOnce(inputStyle);
+	chooseStyleOnce();
 
 	std::vector<std::pair<int, int>> headPosition;
 
@@ -281,13 +245,13 @@ void textureSnake(sf::RenderWindow& window, std::vector<std::pair<int, int>>& sn
 	}
 }
 
-void draw(char& inputStyle, sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void draw(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
 
-	fieldChoose(inputStyle, window, field, snake, offsetX, offsetY);
+	fieldChoose(window, field, snake, offsetX, offsetY);
 
 }
 
-void startGame(char& input, gameState& state) {
+void startGame(gameState& state) {
 	sf::RenderWindow start(sf::VideoMode(1920, 1080), "Settings", sf::Style::Fullscreen);
 
 	Cursor::setCostumCursor(start, "backgroundTexture/hand.png");
@@ -493,7 +457,7 @@ void startGame(char& input, gameState& state) {
 	state = GAME;
 }
 
-void style(char& inputStyle, gameState& state, int page = 1) {
+void style(gameState& state, int page = 1) {
 	while (true) {
 		sf::RenderWindow styleWindow(sf::VideoMode(1920, 1080), "Settings", sf::Style::Fullscreen);
 
@@ -540,7 +504,7 @@ void style(char& inputStyle, gameState& state, int page = 1) {
 			break;
 		}
 
-		displayStyleWindow(styleWindow, inputStyle, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
+		displayStyleWindow(styleWindow, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
 		
 		if (state != STYLE) {
 			break;
@@ -595,7 +559,13 @@ void endGame(int& snakeLength, gameState& state) {
 
 	sf::Text text;
 	text.setFont(font);
-	text.setString("Game Over!\n\n    Score   " + std::to_string(snakeLength));
+	if (win) {
+		text.setString("You\n\nWIN!");
+		text.setCharacterSize(150);
+	}
+	else if (!win){
+		text.setString("Game Over!\n\n    Score   " + std::to_string(snakeLength));
+	}
 	text.setCharacterSize(90);
 	text.setFillColor(sf::Color::White);
 	text.setOutlineThickness(3.0f);
@@ -712,7 +682,89 @@ void saveRecords(int firstRecord, int secondRecord, int thirdRecord, int fourthR
 	}
 }
 
-void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, int& offsetY, gameState& state, char& inputArcad, char& inputStyle, int& firstRecord, int& secondRecord, int& thirdRecord, int& fourthRecord, int& dynamicRecord) {
+void timeArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdField, int& offsetX, int& offsetY) {
+	sf::Font font;
+	if (!font.loadFromFile("font/arial.ttf")) {
+		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	int rows = thirdField.size();
+	int cols = thirdField[0].size();
+
+	textTime.setFont(font);
+	textTime.setCharacterSize(36);
+	textTime.setFillColor(sf::Color(255, 250, 205));
+	textTime.setStyle(sf::Text::Bold);
+
+	int elapsedTime = timeLevel - levelTimer.getElapsedTime().asSeconds();
+	if (elapsedTime < 0) elapsedTime = 0;
+
+	textTime.setString("Time: " + std::to_string(elapsedTime));
+
+	sf::FloatRect textRect = textTime.getGlobalBounds();
+
+	textTime.setPosition(static_cast<float>(offsetX + (cols * cellSize - textRect.width) / 2),
+						 static_cast<float>(offsetY + (rows * cellSize - textRect.height - 924) / 2));
+
+	window.draw(textTime);
+}
+
+void scoreArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdField, int& offsetX, int& offsetY) {
+	sf::Font font;
+	if (!font.loadFromFile("font/arial.ttf")) {
+		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	int rows = thirdField.size();
+	int cols = thirdField[0].size();
+
+	sf::Text text;
+	text.setFont(font);
+	
+	int scoreElapsed = foodForNextLevel - snakeLength;
+	if (scoreElapsed < 0) scoreElapsed = 0;
+	text.setString("Score: " + std::to_string(scoreElapsed));
+
+	text.setCharacterSize(36);
+	text.setFillColor(sf::Color(255, 250, 205));
+	text.setStyle(sf::Text::Bold);
+
+	sf::FloatRect textRect = text.getGlobalBounds();
+
+	text.setPosition(static_cast<float>(offsetX + (cols * cellSize - textRect.width) / 2),
+		static_cast<float>(offsetY + rows * cellSize - textRect.height - 134));
+
+	window.draw(text);
+}
+
+void startText(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdField, int& offsetX, int& offsetY) {
+	sf::Font font;
+	if (!font.loadFromFile("font/arial.ttf")) {
+		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	int rows = thirdField.size();
+	int cols = thirdField[0].size();
+
+	sf::Text textStart;
+	textStart.setString("   Press any key\n to start the game");
+	textStart.setFont(font);
+	textStart.setCharacterSize(36);
+	textStart.setFillColor(sf::Color(255, 250, 205));
+	textStart.setStyle(sf::Text::Bold);
+
+	sf::FloatRect textRect = textStart.getGlobalBounds();
+
+	textStart.setPosition(static_cast<float>(offsetX + (cols * cellSize - textRect.width) / 2),
+						  static_cast<float>(offsetY + (rows * cellSize - textRect.height - 200) / 2));
+
+	window.draw(textStart);
+}
+
+void startGameWithSettings(int& headX, int& headY, int& offsetX, int& offsetY, gameState& state, int& firstRecord, int& secondRecord, int& thirdRecord, int& fourthRecord, int& dynamicRecord) {
 	sf::Font font;
 	if (!font.loadFromFile("font/arial.ttf")) {
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
@@ -747,6 +799,9 @@ void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, in
 	case '2':
 		field = secondField();
 		break;
+	case '3':
+		field = thirdField();
+		break;
 	default:
 		field = barier();
 		break;
@@ -754,9 +809,32 @@ void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, in
 
 	mainSound();
 
-	speedDirection(snakeLength, input);
+	if (inputArcad != '3') {
+		speedDirection(snakeLength);
+	}
 	startPosition(field, headX, headY, snake);
 	food(field);
+
+	while (!startKey && window.isOpen()) {
+		sf::Event event;
+		while (window.pollEvent(event)) {
+
+			window.clear();
+
+			window.draw(backgroundSecond);
+			draw(window, field, snake, offsetX, offsetY);
+			startText(window, field, offsetX, offsetY);
+			if (event.type == sf::Event::KeyPressed) {
+				startKey = true;
+				sf::sleep(sf::milliseconds(250));
+				levelTimer.restart();
+				window.close();
+				break;
+			}
+
+			window.display();
+		}
+	}
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -803,18 +881,25 @@ void startGameWithSettings(int& headX, int& headY, char& input, int& offsetX, in
 			}
 		}
 
-		if (state == GAME) {
+		if (state == GAME && startKey) {
 
-			chooceArcad(inputArcad, window, headX, headY, snakeLength, state, field, snake, checkSound);
+			chooceArcad(window, headX, headY, snakeLength, state, field, snake, offsetX, offsetY);
 
 			directionChanged = false;
 
 			window.clear();
 
 			window.draw(backgroundSecond);
-			draw(inputStyle, window, field, snake, offsetX, offsetY);
-			textureSnake(window, snake, offsetX, offsetY, inputStyle);
-			coundScore(window, snakeLength, font, field, offsetX, offsetY);
+			draw(window, field, snake, offsetX, offsetY);
+			textureSnake(window, snake, offsetX, offsetY);
+			
+			if (inputArcad == '3') {
+				timeArcad(window, field, offsetX, offsetY);
+				scoreArcad(window, field, offsetX, offsetY);
+			}
+			else {
+				coundScore(window, snakeLength, font, field, offsetX, offsetY);
+			}
 
 			window.display();
 			sf::sleep(sf::milliseconds(sp));
@@ -1000,7 +1085,7 @@ void recordMenu(gameState& state, int& firstRecord, int& secondRecord, int& thir
 
 }
 
-void arcad(char& inputArcad, gameState& state, int page = 1) {
+void arcad(gameState& state, int page = 1) {
 	while (true) {
 		sf::RenderWindow ArcadWindow(sf::VideoMode(1920, 1080), "Arcad", sf::Style::Fullscreen);
 
@@ -1034,7 +1119,7 @@ void arcad(char& inputArcad, gameState& state, int page = 1) {
 		if (page == 1) {
 			styleFirst.loadFromFile("style/arcad1.png");
 			styleSecond.loadFromFile("style/arcad2.png");
-			styleThird.loadFromFile("style/arcad.png");
+			styleThird.loadFromFile("style/arcad3.png");
 			styleFourth.loadFromFile("style/arcad.png");
 		}
 		else if (page == 2) {
@@ -1047,7 +1132,7 @@ void arcad(char& inputArcad, gameState& state, int page = 1) {
 			break;
 		}
 
-		displayArcadWindow(ArcadWindow, inputArcad, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
+		displayArcadWindow(ArcadWindow, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
 
 		if (state != ARCAD) {
 			break;
@@ -1055,7 +1140,7 @@ void arcad(char& inputArcad, gameState& state, int page = 1) {
 	}
 }
 
-void menuBar(sf::RenderWindow& menu, int& headX, int& headY, char& input, int& offsetX, int& offsetY, gameState& state) {	
+void menuBar(sf::RenderWindow& menu, int& headX, int& headY, int& offsetX, int& offsetY, gameState& state) {	
 	sf::Font font;
 	if (!font.loadFromFile("font/ArcadeClassic.ttf")) {
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
@@ -1347,10 +1432,6 @@ int main() {
 
 	loadRecords(firstRecord, secondRecord, thirdRecord, fourthRecord, dynamicRecord);
 
-	char input;
-	char inputStyle;
-	char inputArcad;
-
 	sf::Font font;
 	if (!font.loadFromFile("font/arial.ttf")) {
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
@@ -1368,24 +1449,24 @@ int main() {
 		switch (state)
 		{
 		case MENU:
-			menuBar(menu, headX, headY, input, offsetX, offsetY, state);
+			menuBar(menu, headX, headY, offsetX, offsetY, state);
 			break;
 		case START:
 			if (!checkButton)
 				inputStyle = '1';
-			startGame(input, state);
+			startGame(state);
 			break;
 		case STYLE:
-			style(inputStyle, state);
+			style(state);
 			break;
 		case ARCAD:
-			arcad(inputArcad, state);
+			arcad(state);
 			break;
 		case RECORD:
 			recordMenu(state, firstRecord, secondRecord, thirdRecord, fourthRecord, dynamicRecord);
 			break;
 		case GAME:
-			startGameWithSettings(headX, headY, input, offsetX, offsetY, state, inputArcad, inputStyle, firstRecord, secondRecord, thirdRecord, fourthRecord, dynamicRecord);
+			startGameWithSettings(headX, headY, offsetX, offsetY, state, firstRecord, secondRecord, thirdRecord, fourthRecord, dynamicRecord);
 			break;
 		case END:
 			endGame(snakeLength, state);
@@ -1397,9 +1478,16 @@ int main() {
 				snakeLength = 1;
 				headX = 0;
 				headY = 0;
+
+				if (inputArcad == '3') {
+					timeLevel = 25;
+					levelTimer.restart();
+					sp = third;
+					win = false;
+				}
+				startKey = false;
 			}
 			else {
-				sp = second;
 				snakeLength = 1;
 				isStyleChosen = false;
 				checkButton = false;
@@ -1407,6 +1495,8 @@ int main() {
 				headY = 0;
 
 				inputArcad = ' ';
+				win = false;
+				startKey = false;
 				state = MENU;
 			}
 			break;

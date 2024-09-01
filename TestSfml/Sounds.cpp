@@ -20,6 +20,19 @@ void foodSound() {
 	eatSound.play();
 }
 
+void punchSound() {
+	if (checkSound) return;
+
+	if (!buffer.loadFromFile("Music/punch.wav")) {
+		std::cerr << RED_TEXT << "Error loading sound file" << RESET_TEXT << std::endl;
+		return;
+	}
+	static sf::Sound punchSound;
+	punchSound.setBuffer(buffer);
+	punchSound.setVolume(250);
+	punchSound.play();
+}
+
 void endSound() {
 	if (checkSound) return;
 
