@@ -111,3 +111,60 @@ void thirdArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snak
 		thirdField[tail.first][tail.second] = ' ';
 	}
 }
+
+void timeArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdField, int& offsetX, int& offsetY) {
+	sf::Font font;
+	if (!font.loadFromFile("font/arial.ttf")) {
+		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	int rows = thirdField.size();
+	int cols = thirdField[0].size();
+
+	textTime.setFont(font);
+	textTime.setCharacterSize(36);
+	textTime.setFillColor(sf::Color(255, 250, 205));
+	textTime.setStyle(sf::Text::Bold);
+
+	int elapsedTime = timeLevel - levelTimer.getElapsedTime().asSeconds();
+	if (elapsedTime < 0) elapsedTime = 0;
+
+	textTime.setString("Time: " + std::to_string(elapsedTime));
+
+	sf::FloatRect textRect = textTime.getGlobalBounds();
+
+	textTime.setPosition(static_cast<float>(offsetX + (cols * cellSize - textRect.width) / 2),
+		static_cast<float>(offsetY + (rows * cellSize - textRect.height - 924) / 2));
+
+	window.draw(textTime);
+}
+
+void scoreArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdField, int& offsetX, int& offsetY) {
+	sf::Font font;
+	if (!font.loadFromFile("font/arial.ttf")) {
+		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
+		return;
+	}
+
+	int rows = thirdField.size();
+	int cols = thirdField[0].size();
+
+	sf::Text text;
+	text.setFont(font);
+
+	int scoreElapsed = foodForNextLevel - snakeLength;
+	if (scoreElapsed < 0) scoreElapsed = 0;
+	text.setString("Score: " + std::to_string(scoreElapsed));
+
+	text.setCharacterSize(36);
+	text.setFillColor(sf::Color(255, 250, 205));
+	text.setStyle(sf::Text::Bold);
+
+	sf::FloatRect textRect = text.getGlobalBounds();
+
+	text.setPosition(static_cast<float>(offsetX + (cols * cellSize - textRect.width) / 2),
+		static_cast<float>(offsetY + rows * cellSize - textRect.height - 134));
+
+	window.draw(text);
+}
