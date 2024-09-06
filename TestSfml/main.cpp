@@ -24,6 +24,7 @@
 #include "Sounds.h"
 #include "Texture.h"
 #include "Font.h"
+#include "ButtonView.h"
 
 #include "Arcad1.h"
 #include "Arcad2.h"
@@ -36,42 +37,6 @@
 #define BLUE_TEXT "\033[0;94m"
 
 #define RESET_TEXT "\033[0m"
-
-Button createButton(const std::string& text, sf::Texture& textureBack, const sf::Vector2f& position, const sf::Vector2f& origin) {
-	Button button(text, { 500, 130 }, 80, sf::Color::White);
-	button.setFont(fontPixel);
-	button.setTexture(textureBack);
-	button.setTextOutline(3.0f);
-	button.setTextStyle();
-	button.setPosition(position);
-	button.setOrigin(origin);
-	return button;
-}
-
-Button createSecondButton(const std::string& text, sf::Texture& textureBack, const sf::Vector2f& position, const sf::Vector2f& origin) {
-	Button buttonSecond(text, { 300, 100 }, 65, sf::Color::White);
-	buttonSecond.setFont(fontPixel);
-	buttonSecond.setTexture(textureBack);
-	buttonSecond.setTextOutline(2.0f);
-	buttonSecond.setTextStyle();
-	buttonSecond.setPosition(position);
-	buttonSecond.setOrigin(origin);
-	return buttonSecond;
-}
-
-sf::Text createText(const std::string& name, const sf::Vector2f& position) {
-	sf::Text text;
-	text.setFont(fontMain);
-	text.setString(name);
-	text.setCharacterSize(65);
-	text.setFillColor(sf::Color::White);
-	text.setOutlineThickness(3.0f);
-	text.setStyle(sf::Text::Bold);
-	text.setPosition(position);
-	return text;
-}
-
-void endGame(gameState& state);
 
 std::vector<std::vector<char>> barier() {
 	std::vector<std::vector<char>> box(rows);
@@ -282,7 +247,7 @@ void textureSnake(sf::RenderWindow& window, std::vector<std::pair<int, int>>& sn
 }
 
 void draw(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake) {
-	fieldChoose(window, field, snake, offsetX, offsetY);
+	fieldChoose(window, field, snake);
 }
 
 void startGame(gameState& state) {
@@ -402,7 +367,7 @@ void style(gameState& state, int page = 1) {
 			break;
 		}
 
-		displayStyleWindow(styleWindow, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
+		displayStyleWindow(styleWindow, state, styleFirst, styleSecond, styleThird, styleFourth, page);
 		
 		if (state != STYLE) {
 			break;
@@ -802,7 +767,7 @@ void arcad(gameState& state, int page = 1) {
 			break;
 		}
 
-		displayArcadWindow(ArcadWindow, state, backgroundFirst, backgroundSecond, styleFirst, styleSecond, styleThird, styleFourth, buttonBackNormal, buttonBackClick, page);
+		displayArcadWindow(ArcadWindow, state, styleFirst, styleSecond, styleThird, styleFourth, page);
 
 		if (state != ARCAD) {
 			break;

@@ -45,7 +45,7 @@ void thirdArcadLogic(sf::RenderWindow& window, gameState& state, std::vector<std
 	case down: headX += 1; break;
 	}
 
-	float elapsedTime = levelTimer.getElapsedTime().asSeconds();
+	int elapsedTime = static_cast<int>(levelTimer.getElapsedTime().asSeconds());
 	if (elapsedTime >= timeLevel) {
 		if (snakeLength < foodForNextLevel) {
 			music.stop();
@@ -127,7 +127,7 @@ void timeArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdFi
 	textTime.setFillColor(sf::Color(255, 250, 205));
 	textTime.setStyle(sf::Text::Bold);
 
-	float elapsedTime = timeLevel - levelTimer.getElapsedTime().asSeconds();
+	int elapsedTime = static_cast<int>(timeLevel - levelTimer.getElapsedTime().asSeconds());
 	if (elapsedTime < 0) elapsedTime = 0;
 
 	textTime.setString("Time: " + std::to_string(elapsedTime));
@@ -135,7 +135,7 @@ void timeArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdFi
 	sf::FloatRect textRect = textTime.getGlobalBounds();
 
 	textTime.setPosition(static_cast<float>(offsetX + (cols * cellSize - textRect.width) / 2),
-		static_cast<float>(offsetY + (rows * cellSize - textRect.height - 924) / 2));
+						 static_cast<float>(offsetY + (rows * cellSize - textRect.height - 924) / 2));
 
 	window.draw(textTime);
 }

@@ -1,10 +1,9 @@
 #pragma once
-
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "globals.h"
 
-void drawBlackField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void drawBlackField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake) {
 
 	sf::Texture food;
 	if (!food.loadFromFile("firstSnakeTexture/food.png")) {
@@ -55,7 +54,7 @@ void drawBlackField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 	}
 }
 
-void drawGreenField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void drawGreenField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake) {
 
 	sf::Texture food[8];
 	if (!food[0].loadFromFile("fifthSnakeTexture/food.png") ||
@@ -186,7 +185,7 @@ void drawGreenField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 	}
 }
 
-void drawGreyField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void drawGreyField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake) {
 
 	sf::Texture food;
 	if (!food.loadFromFile("sixSnakeTexture/food.png")) {
@@ -297,7 +296,7 @@ void drawGreyField(sf::RenderWindow& window, std::vector<std::vector<char>>& fie
 	}
 }
 
-void drawSpaceField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void drawSpaceField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake) {
 
 	sf::Texture food[13];
 	if (!food[0].loadFromFile("sevenSnakeTexture/food.png") ||
@@ -434,7 +433,7 @@ void drawSpaceField(sf::RenderWindow& window, std::vector<std::vector<char>>& fi
 	}
 }
 
-void drawCatField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void drawCatField(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake) {
 
 	sf::Texture food;
 	if (!food.loadFromFile("eightSnakeTexture/food.png")) {
@@ -546,35 +545,35 @@ void drawCatField(sf::RenderWindow& window, std::vector<std::vector<char>>& fiel
 	}
 }
 
-void fieldChoose(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void fieldChoose(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake) {
 
 	switch (inputStyle){
 	case '1':
-		drawBlackField(window, field, snake, offsetX, offsetY);
+		drawBlackField(window, field, snake);
 		break;
 	case '2':
-		drawBlackField(window, field, snake, offsetX, offsetY);
+		drawBlackField(window, field, snake);
 		break;
 	case '3':
-		drawBlackField(window, field, snake, offsetX, offsetY);
+		drawBlackField(window, field, snake);
 		break;
 	case '4':
-		drawBlackField(window, field, snake, offsetX, offsetY);
+		drawBlackField(window, field, snake);
 		break;
 	case '5':
-		drawGreenField(window, field, snake, offsetX, offsetY);
+		drawGreenField(window, field, snake);
 		break;
 	case '6':
-		drawGreyField(window, field, snake, offsetX, offsetY);
+		drawGreyField(window, field, snake);
 		break;
 	case '7':
-		drawSpaceField(window, field, snake, offsetX, offsetY);
+		drawSpaceField(window, field, snake);
 		break;
 	case '8':
-		drawCatField(window, field, snake, offsetX, offsetY);
+		drawCatField(window, field, snake);
 		break;
 	default:
-		drawBlackField(window, field, snake, offsetX, offsetY);
+		drawBlackField(window, field, snake);
 		break;
 	}
 }

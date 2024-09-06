@@ -5,8 +5,9 @@
 #include <SFML/Audio.hpp>
 #include "Button.h"
 #include "gameState.h"
+#include "Texture.h"
 #include "globals.h"
 
 void soundBottonThird();
 
-void displayArcadWindow(sf::RenderWindow& window, gameState& state, sf::Texture& backgroundFirst, sf::Texture& backgroundSecond, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, sf::Texture& buttonBackNormal, sf::Texture& buttonBackClick, int& page);
+void displayArcadWindow(sf::RenderWindow& window, gameState& state, sf::Texture& styleFirst, sf::Texture& styleSecond, sf::Texture& styleThird, sf::Texture& styleFourth, int& page);
