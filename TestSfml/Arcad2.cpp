@@ -38,8 +38,8 @@ std::vector<std::vector<char>> secondField() {
 }
 
 void unFood(std::vector<std::vector<char>>& secondField) {
-	int rows = secondField.size();
-	int cols = secondField[0].size();
+	size_t rows = secondField.size();
+	size_t cols = secondField[0].size();
 
 	std::vector<std::pair<int, int>> freePositions;
 
@@ -67,7 +67,7 @@ void unFood(std::vector<std::vector<char>>& secondField) {
 	}
 }
 
-void secondArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& secondField, std::vector<std::pair<int, int>>& snake) {
+void secondArcadLogic(sf::RenderWindow& window, gameState& state, std::vector<std::vector<char>>& secondField, std::vector<std::pair<int, int>>& snake) {
 	switch (dir) {
 	case left: headY -= 1; break;
 	case right: headY += 1; break;

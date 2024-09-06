@@ -25,3 +25,14 @@ int foodForNextLevel = 10;
 char input;
 char inputArcad;
 char inputStyle;
+
+int firstRecord;
+int secondRecord;
+int thirdRecord;
+int fourthRecord;
+int dynamicRecord;
+
+int headX;
+int headY;
+int offsetX = 0;
+int offsetY = 0;

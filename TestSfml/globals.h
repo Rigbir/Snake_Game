@@ -4,13 +4,13 @@
 extern int cellSize;
 extern int rows;
 extern int cols;
-extern int foodIndex;
+extern int foodIndex;  
 extern int snakeLength;
 
-extern enum direction { right, left, up, down };
+enum direction { right, left, up, down };
 extern direction dir;
 
-extern enum speed { first = 30, second = 50, third = 100, fourth = 150, add = 75 };
+enum speed { first = 30, second = 50, third = 100, fourth = 150, add = 75 };
 extern speed sp;
 
 extern bool checkButton;
@@ -29,3 +29,14 @@ extern int foodForNextLevel;
 extern char input;
 extern char inputArcad;
 extern char inputStyle;
+
+extern int firstRecord;
+extern int secondRecord;
+extern int thirdRecord;
+extern int fourthRecord;
+extern int dynamicRecord;
+
+extern int headX;
+extern int headY;
+extern int offsetX;
+extern int offsetY;

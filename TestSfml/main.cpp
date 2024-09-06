@@ -71,30 +71,30 @@ sf::Text createText(const std::string& name, const sf::Vector2f& position) {
 	return text;
 }
 
-void endGame(int& snakeLength, gameState& state);
+void endGame(gameState& state);
 
 std::vector<std::vector<char>> barier() {
 	std::vector<std::vector<char>> box(rows);
 
 	box[0] = std::vector<char>(cols, '1');
-	box[rows - 1] = std::vector<char>(cols, '1');
+	box[static_cast<size_t>(rows) - 1] = std::vector<char>(cols, '1');
 
 	for (int i = 1; i < rows - 1; ++i) {
 		box[i] = std::vector<char>(cols, ' ');
 		box[i][0] = '1';
-		box[i][cols - 1] = '1';
+		box[i][static_cast<size_t>(cols) - 1] = '1';
 	}
 
 	return box;
 }
 
-void startPosition(std::vector<std::vector<char>>& field, int& headX, int& headY, std::vector<std::pair<int, int>>& snake) {
-	int rows = field.size();
-	int cols = field[0].size();
+void startPosition(std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake) {
+	size_t rows = field.size();
+	size_t cols = field[0].size();
 
 	while (true) {
-		headX = (rows - 2) / 2 + 1;
-		headY = (cols - 2) / 2 + 1;
+		headX = static_cast<int>((rows - 2) / 2 + 1);
+		headY = static_cast<int>((cols - 2) / 2 + 1);
 		if (field[headX][headY] != '1') {
 			snake.push_back({ headX, headY });
 			field[headX][headY] = 'O';
@@ -103,7 +103,7 @@ void startPosition(std::vector<std::vector<char>>& field, int& headX, int& headY
 	}
 }
 
-void dynamicSpeed(int& snakeLength) {
+void dynamicSpeed() {
 	if (snakeLength < 4) sp = fourth;
 	else if (snakeLength >= 4 && snakeLength < 10) sp = third;
 	else if (snakeLength >= 10 && snakeLength < 14) sp = add;
@@ -111,17 +111,17 @@ void dynamicSpeed(int& snakeLength) {
 	else if (snakeLength >= 20) sp = first;
 }
 
-void speedDirection(int& snakeLength) {
+void speedDirection() {
 	switch (input) {
 	case '1': sp = first; break;
 	case '2': sp = second; break;
 	case '3': sp = third; break;
 	case '4': sp = fourth; break;
-	case '5': dynamicSpeed(snakeLength);
+	case '5': dynamicSpeed();
 	}
 }
 
-void averageWindow(sf::RenderWindow& window, int& offsetX, int& offsetY) {
+void averageWindow(sf::RenderWindow& window) {
 	int fieldWidth = cols * cellSize;
 	int fieldHeight = rows * cellSize;
 
@@ -131,9 +131,9 @@ void averageWindow(sf::RenderWindow& window, int& offsetX, int& offsetY) {
 	offsetY = (windowSize.y - fieldHeight) / 2;
 }
 
-void coundScore(sf::RenderWindow& window, int& snakeLength, std::vector<std::vector<char>>& field, int& offsetX, int& offsetY) {
-	int rows = field.size();
-	int cols = field[0].size();
+void coundScore(sf::RenderWindow& window, std::vector<std::vector<char>>& field) {
+	size_t rows = field.size();
+	size_t cols = field[0].size();
 
 	sf::Text text;
 	text.setFont(fontMain);
@@ -157,7 +157,7 @@ void chooseStyleOnce() {
 	}
 }
 
-void textureSnake(sf::RenderWindow& window, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void textureSnake(sf::RenderWindow& window, std::vector<std::pair<int, int>>& snake) {
 
 	chooseStyleOnce();
 
@@ -281,7 +281,7 @@ void textureSnake(sf::RenderWindow& window, std::vector<std::pair<int, int>>& sn
 	}
 }
 
-void draw(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void draw(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake) {
 	fieldChoose(window, field, snake, offsetX, offsetY);
 }
 
@@ -300,8 +300,8 @@ void startGame(gameState& state) {
 	backgroundSecond.setTexture(textureBackSecond);
 
 	sf::Vector2u startWindow = start.getSize();
-	float startWidth = rows * cellSize;
-	float startHeight = cols * cellSize;
+	float startWidth = static_cast<float>(rows) * static_cast<float>(cellSize);
+	float startHeight = static_cast<float>(cols) * static_cast<float>(cellSize);
 
 	float offX = (startWindow.x - startWidth) / 2.0f;
 	float offY = (startWindow.y - startHeight) / 2.0f;
@@ -410,7 +410,7 @@ void style(gameState& state, int page = 1) {
 	}
 }
 
-void endGame(int& snakeLength, gameState& state) {
+void endGame(gameState& state) {
 	sf::RenderWindow end(sf::VideoMode(1920, 1080), "End", sf::Style::Fullscreen);
 
 	Cursor::setCostumCursor(end, "backgroundTexture/hand.png");
@@ -442,8 +442,8 @@ void endGame(int& snakeLength, gameState& state) {
 	text.setOrigin(textBounds.width / 2.0f, textBounds.height / 2.0f);
 	text.setPosition(970, 280);
 
-	float startWidth = rows * cellSize;
-	float startHeight = cols * cellSize;
+	float startWidth = static_cast<float>(rows) * static_cast<float>(cellSize);
+	float startHeight = static_cast<float>(cols) * static_cast<float>(cellSize);
 
 	sf::Vector2u endWindow = end.getSize();
 
@@ -510,7 +510,7 @@ void endGame(int& snakeLength, gameState& state) {
 	}
 }
 
-void loadRecords(int& firstRecord, int& secondRecord, int& thirdRecord, int& fourthRecord, int& dynamicRecord) {
+void loadRecords() {
 	std::ifstream file("record.txt");
 	if (file.is_open()) {
 		file >> firstRecord >> secondRecord >> thirdRecord >> fourthRecord >> dynamicRecord;
@@ -521,7 +521,7 @@ void loadRecords(int& firstRecord, int& secondRecord, int& thirdRecord, int& fou
 	}
 }
 
-void saveRecords(int firstRecord, int secondRecord, int thirdRecord, int fourthRecord, int dynamicRecord) {
+void saveRecords() {
 	std::ofstream file("record.txt");
 	if (file.is_open()) {
 		file << firstRecord << std::endl;
@@ -533,9 +533,9 @@ void saveRecords(int firstRecord, int secondRecord, int thirdRecord, int fourthR
 	}
 }
 
-void startText(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdField, int& offsetX, int& offsetY) {
-	int rows = thirdField.size();
-	int cols = thirdField[0].size();
+void startText(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdField) {
+	size_t rows = thirdField.size();
+	size_t cols = thirdField[0].size();
 
 	sf::Text textStart;
 	textStart.setString("   Press any key\n to start the game");
@@ -552,9 +552,9 @@ void startText(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdFi
 	window.draw(textStart);
 }
 
-void startGameWithSettings(int& headX, int& headY, int& offsetX, int& offsetY, gameState& state, int& firstRecord, int& secondRecord, int& thirdRecord, int& fourthRecord, int& dynamicRecord) {
+void startGameWithSettings(gameState& state) {
 	sf::RenderWindow window(sf::VideoMode(1920, 1080), "Snake Game", sf::Style::Fullscreen);
-	averageWindow(window, offsetX, offsetY);
+	averageWindow(window);
 
 	window.setMouseCursorVisible(false);
 
@@ -586,9 +586,9 @@ void startGameWithSettings(int& headX, int& headY, int& offsetX, int& offsetY, g
 	mainSound();
 
 	if (inputArcad != '3') {
-		speedDirection(snakeLength);
+		speedDirection();
 	}
-	startPosition(field, headX, headY, snake);
+	startPosition(field, snake);
 	food(field);
 
 	while (!startKey && window.isOpen()) {
@@ -598,8 +598,8 @@ void startGameWithSettings(int& headX, int& headY, int& offsetX, int& offsetY, g
 			window.clear();
 
 			window.draw(background);
-			draw(window, field, snake, offsetX, offsetY);
-			startText(window, field, offsetX, offsetY);
+			draw(window, field, snake);
+			startText(window, field);
 			if (event.type == sf::Event::KeyPressed) {
 				startKey = true;
 				sf::sleep(sf::milliseconds(250));
@@ -617,7 +617,7 @@ void startGameWithSettings(int& headX, int& headY, int& offsetX, int& offsetY, g
 		bool directionChanged = false;
 		while (window.pollEvent(event)) {
 			if (input == '5') {
-				dynamicSpeed(snakeLength);
+				dynamicSpeed();
 			}
 
 			if (event.type == sf::Event::Closed)
@@ -659,22 +659,22 @@ void startGameWithSettings(int& headX, int& headY, int& offsetX, int& offsetY, g
 
 		if (state == GAME && startKey) {
 
-			chooceArcad(window, headX, headY, snakeLength, state, field, snake, offsetX, offsetY);
+			chooceArcad(window, state, field, snake);
 
 			directionChanged = false;
 
 			window.clear();
 
 			window.draw(background);
-			draw(window, field, snake, offsetX, offsetY);
-			textureSnake(window, snake, offsetX, offsetY);
+			draw(window, field, snake);
+			textureSnake(window, snake);
 			
 			if (inputArcad == '3') {
-				timeArcad(window, field, offsetX, offsetY);
-				scoreArcad(window, field, offsetX, offsetY);
+				timeArcad(window, field);
+				scoreArcad(window, field);
 			}
 			else {
-				coundScore(window, snakeLength, field, offsetX, offsetY);
+				coundScore(window, field);
 			}
 
 			window.display();
@@ -703,7 +703,7 @@ void startGameWithSettings(int& headX, int& headY, int& offsetX, int& offsetY, g
 	music.stop();
 }
 
-void recordMenu(gameState& state, int& firstRecord, int& secondRecord, int& thirdRecord, int& fourthRecord, int& dynamicRecord) {
+void recordMenu(gameState& state) {
 	sf::RenderWindow record(sf::VideoMode(1920, 1080), "Record", sf::Style::Fullscreen);
 
 	Cursor::setCostumCursor(record, "backgroundTexture/hand.png");
@@ -717,8 +717,8 @@ void recordMenu(gameState& state, int& firstRecord, int& secondRecord, int& thir
 	sf::Sprite backgroundSecond;
 	backgroundSecond.setTexture(textureBackSecond);
 
-	float styleWidth = rows * cellSize;
-	float styleHeight = cols * cellSize;
+	float styleWidth = static_cast<float>(rows) * static_cast<float>(cellSize);
+	float styleHeight = static_cast<float>(cols) * static_cast<float>(cellSize);
 
 	float offX = (recordSize.x - styleWidth) / 2.0f;
 	float offY = (recordSize.y - styleHeight) / 2.0f;
@@ -810,7 +810,7 @@ void arcad(gameState& state, int page = 1) {
 	}
 }
 
-void menuBar(sf::RenderWindow& menu, int& headX, int& headY, int& offsetX, int& offsetY, gameState& state) {	
+void menuBar(sf::RenderWindow& menu, gameState& state) {	
 	Cursor::setCostumCursor(menu, "backgroundTexture/hand.png");
 
 	sf::Sprite background;
@@ -911,22 +911,12 @@ void menuBar(sf::RenderWindow& menu, int& headX, int& headY, int& offsetX, int& 
 }
 
 int main() {
-	srand(time(NULL));
-
-	int headX, headY;
-	int offsetX = 0;
-	int offsetY = 0;
-
-	int firstRecord;
-	int secondRecord;
-	int thirdRecord;
-	int fourthRecord;
-	int dynamicRecord;
+	srand(static_cast<unsigned int>(time(NULL)));
 
 	loadFont();
 	loadTextures();
 
-	loadRecords(firstRecord, secondRecord, thirdRecord, fourthRecord, dynamicRecord);
+	loadRecords();
 
 	sf::RenderWindow menu(sf::VideoMode(1920, 1080), "Menu", sf::Style::Fullscreen);
 
@@ -939,7 +929,7 @@ int main() {
 		switch (state)
 		{
 		case MENU:
-			menuBar(menu, headX, headY, offsetX, offsetY, state);
+			menuBar(menu, state);
 			break;
 		case START:
 			if (!checkButton)
@@ -953,13 +943,13 @@ int main() {
 			arcad(state);
 			break;
 		case RECORD:
-			recordMenu(state, firstRecord, secondRecord, thirdRecord, fourthRecord, dynamicRecord);
+			recordMenu(state);
 			break;
 		case GAME:
-			startGameWithSettings(headX, headY, offsetX, offsetY, state, firstRecord, secondRecord, thirdRecord, fourthRecord, dynamicRecord);
+			startGameWithSettings(state);
 			break;
 		case END:
-			endGame(snakeLength, state);
+			endGame(state);
 
 			foodIndex = 0;
 
@@ -995,7 +985,7 @@ int main() {
 		menu.display();
 	}
 
-	saveRecords(firstRecord, secondRecord, thirdRecord, fourthRecord, dynamicRecord);
+	saveRecords();
 
 	return 0;
 }

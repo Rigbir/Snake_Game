@@ -42,8 +42,8 @@ std::vector<std::vector<char>> firstField() {
 }
 
 void food(std::vector<std::vector<char>>& firstField) {
-	int rows = firstField.size();
-	int cols = firstField[0].size();
+	size_t rows = firstField.size();
+	size_t cols = firstField[0].size();
 
 	std::vector<std::pair<int, int>> freePositions;
 
@@ -62,8 +62,8 @@ void food(std::vector<std::vector<char>>& firstField) {
 }
 
 bool foodCheck(std::vector<std::vector<char>>& firstField) {
-	int rows = firstField.size();
-	int cols = firstField[0].size();
+	size_t rows = firstField.size();
+	size_t cols = firstField[0].size();
 
 	for (int i = 1; i < rows - 1; ++i) {
 		for (int j = 1; j < cols - 1; ++j) {
@@ -74,7 +74,7 @@ bool foodCheck(std::vector<std::vector<char>>& firstField) {
 	return false;
 }
 
-void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake) {
+void firstArcadLogic(sf::RenderWindow& window, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake) {
 	switch (dir) {
 	case left: headY -= 1; break;
 	case right: headY += 1; break;
@@ -110,13 +110,13 @@ void firstArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snak
 	}
 }
 
-void chooceArcad(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake, int& offsetX, int& offsetY) {
+void chooceArcad(sf::RenderWindow& window, gameState& state, std::vector<std::vector<char>>& firstField, std::vector<std::pair<int, int>>& snake) {
 	switch (inputArcad) {
 	case '1':
-		firstArcadLogic(window, headX, headY, snakeLength, state, firstField, snake);
+		firstArcadLogic(window, state, firstField, snake);
 		break;
 	case '2':
-		secondArcadLogic(window, headX, headY, snakeLength, state, firstField, snake);
+		secondArcadLogic(window, state, firstField, snake);
 		unFoodElapsed = unFoodTimer.getElapsedTime();
 		if (unFoodElapsed.asSeconds() >= 3.2f) {
 			unFood(firstField);
@@ -124,10 +124,10 @@ void chooceArcad(sf::RenderWindow& window, int& headX, int& headY, int& snakeLen
 		}
 		break;
 	case '3':
-		thirdArcadLogic(window, headX, headY, snakeLength, state, firstField, snake);
+		thirdArcadLogic(window, state, firstField, snake);
 		break;
 	default:
-		firstArcadLogic(window, headX, headY, snakeLength, state, firstField, snake);
+		firstArcadLogic(window, state, firstField, snake);
 		break;
 	}
 }

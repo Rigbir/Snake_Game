@@ -37,7 +37,7 @@ std::vector<std::vector<char>> thirdField() {
 	return field;
 }
 
-void thirdArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snakeLength, gameState& state, std::vector<std::vector<char>>& thirdField, std::vector<std::pair<int, int>>& snake) {
+void thirdArcadLogic(sf::RenderWindow& window, gameState& state, std::vector<std::vector<char>>& thirdField, std::vector<std::pair<int, int>>& snake) {
 	switch (dir) {
 	case left: headY -= 1; break;
 	case right: headY += 1; break;
@@ -45,7 +45,7 @@ void thirdArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snak
 	case down: headX += 1; break;
 	}
 
-	int elapsedTime = levelTimer.getElapsedTime().asSeconds();
+	float elapsedTime = levelTimer.getElapsedTime().asSeconds();
 	if (elapsedTime >= timeLevel) {
 		if (snakeLength < foodForNextLevel) {
 			music.stop();
@@ -112,22 +112,22 @@ void thirdArcadLogic(sf::RenderWindow& window, int& headX, int& headY, int& snak
 	}
 }
 
-void timeArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdField, int& offsetX, int& offsetY) {
+void timeArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdField) {
 	sf::Font font;
 	if (!font.loadFromFile("font/arial.ttf")) {
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
 		return;
 	}
 
-	int rows = thirdField.size();
-	int cols = thirdField[0].size();
+	size_t rows = thirdField.size();
+	size_t cols = thirdField[0].size();
 
 	textTime.setFont(font);
 	textTime.setCharacterSize(36);
 	textTime.setFillColor(sf::Color(255, 250, 205));
 	textTime.setStyle(sf::Text::Bold);
 
-	int elapsedTime = timeLevel - levelTimer.getElapsedTime().asSeconds();
+	float elapsedTime = timeLevel - levelTimer.getElapsedTime().asSeconds();
 	if (elapsedTime < 0) elapsedTime = 0;
 
 	textTime.setString("Time: " + std::to_string(elapsedTime));
@@ -140,15 +140,15 @@ void timeArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdFi
 	window.draw(textTime);
 }
 
-void scoreArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdField, int& offsetX, int& offsetY) {
+void scoreArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdField) {
 	sf::Font font;
 	if (!font.loadFromFile("font/arial.ttf")) {
 		std::cerr << RED_TEXT << "Error loading font file" << RESET_TEXT << std::endl;
 		return;
 	}
 
-	int rows = thirdField.size();
-	int cols = thirdField[0].size();
+	size_t rows = thirdField.size();
+	size_t cols = thirdField[0].size();
 
 	sf::Text text;
 	text.setFont(font);
