@@ -25,6 +25,7 @@
 #include "Texture.h"
 #include "Font.h"
 #include "ButtonView.h"
+#include "Fade.h"
 
 #include "Arcad1.h"
 #include "Arcad2.h"
@@ -700,10 +701,15 @@ void recordMenu(gameState& state) {
 		createText("Dynamic\nScore: " + std::to_string(dynamicRecord), { 840, 590 })
 	};
 
+	sf::RectangleShape blackScreen;
+	int alpha;
+	bool fadeOut;
+
+	createParametrs(blackScreen, alpha);
+
 	while (record.isOpen()) {
 		sf::Event event;
 		while (record.pollEvent(event)) {
-
 			if (event.type == sf::Event::MouseButtonPressed) {
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					if (menu.mousePosition(record)) {
@@ -720,27 +726,26 @@ void recordMenu(gameState& state) {
 						menu.setPressed(false);
 						menu.textureUpdate(record, buttonBackClick, buttonBackNormal);
 						soundBotton();
-						record.close();
-						state = MENU;
+						fadeOut = true;
 					}
 				}
 			}
 
 			menu.update(record);
-
-			record.clear();
-
-			record.draw(background);
-			record.draw(backgroundSecond);
-
-			for (auto& i : Text) {
-				record.draw(i);
-			}
-
-			menu.drawTo(record);
-
-			record.display();
 		}
+
+		record.clear();
+
+		record.draw(background);
+		record.draw(backgroundSecond);
+		for (auto& i : Text) {
+			record.draw(i);
+		}
+		menu.drawTo(record);
+
+		settingFade(record, blackScreen, fadeOut, alpha, state, MENU);
+
+		record.display();
 	}
 }
 
@@ -775,7 +780,9 @@ void arcad(gameState& state, int page = 1) {
 	}
 }
 
-void menuBar(sf::RenderWindow& menu, gameState& state) {	
+void menuBar(gameState& state) {
+	sf::RenderWindow menu(sf::VideoMode(1920, 1080), "Menu", sf::Style::Fullscreen);
+
 	Cursor::setCostumCursor(menu, "backgroundTexture/hand.png");
 
 	sf::Sprite background;
@@ -835,7 +842,7 @@ void menuBar(sf::RenderWindow& menu, gameState& state) {
 							if (i == 1) state = STYLE;
 							if (i == 2) state = ARCAD;
 							if (i == 3) state = RECORD;
-							if (i == 4) menu.close();
+							if (i == 4) state = CLOSE;
 
 							return;
 						}
@@ -853,25 +860,84 @@ void menuBar(sf::RenderWindow& menu, gameState& state) {
 					}
 				}
 			}
-
-			for (auto& i : buttons) {
-				i.update(menu);
-			}
-			soundTest.update(menu);
-
-			menu.clear();
-
-			menu.draw(background);
-
-			menu.draw(title);
-			
-			for (auto& i : buttons) {
-				i.drawTo(menu);
-			}
-			soundTest.drawTo(menu);
-
-			menu.display();
 		}
+
+		for (auto& i : buttons) {
+			i.update(menu);
+		}
+		soundTest.update(menu);
+
+		menu.clear();
+		menu.draw(background);
+		menu.draw(title);
+
+		for (auto& i : buttons) {
+			i.drawTo(menu);
+		}
+		soundTest.drawTo(menu);
+
+		menu.display();
+	}
+}
+
+void handleState(sf::RenderWindow& window, gameState& state) {
+	switch (state)
+	{
+	case MENU:
+		menuBar(state);
+		break;
+	case START:
+		if (!checkButton)
+			inputStyle = '1';
+		startGame(state);
+		break;
+	case STYLE:
+		style(state);
+		break;
+	case ARCAD:
+		arcad(state);
+		break;
+	case RECORD:
+		recordMenu(state);
+		break;
+	case GAME:
+		startGameWithSettings(state);
+		break;
+	case END:
+		endGame(state);
+
+		foodIndex = 0;
+
+		if (!checkEnd) {
+			state = GAME;
+			snakeLength = 1;
+			headX = 0;
+			headY = 0;
+
+			if (inputArcad == '3') {
+				timeLevel = 25;
+				levelTimer.restart();
+				sp = third;
+				win = false;
+			}
+			startKey = false;
+		}
+		else {
+			snakeLength = 1;
+			isStyleChosen = false;
+			checkButton = false;
+			headX = 0;
+			headY = 0;
+
+			inputArcad = ' ';
+			win = false;
+			startKey = false;
+			state = MENU;
+		}
+		break;
+	case CLOSE:
+		window.close();
+		break;
 	}
 }
 
@@ -883,71 +949,14 @@ int main() {
 
 	loadRecords();
 
-	sf::RenderWindow menu(sf::VideoMode(1920, 1080), "Menu", sf::Style::Fullscreen);
+	sf::RenderWindow windowMain(sf::VideoMode(1920, 1080), "Menu", sf::Style::Fullscreen);
 
-	gameState state = MENU;
+	while (windowMain.isOpen()) {
+		windowMain.clear();
 
-	while (menu.isOpen()) {
+		handleState(windowMain, state);
 
-		menu.clear();
-
-		switch (state)
-		{
-		case MENU:
-			menuBar(menu, state);
-			break;
-		case START:
-			if (!checkButton)
-				inputStyle = '1';
-			startGame(state);
-			break;
-		case STYLE:
-			style(state);
-			break;
-		case ARCAD:
-			arcad(state);
-			break;
-		case RECORD:
-			recordMenu(state);
-			break;
-		case GAME:
-			startGameWithSettings(state);
-			break;
-		case END:
-			endGame(state);
-
-			foodIndex = 0;
-
-			if (!checkEnd) {
-				state = GAME;
-				snakeLength = 1;
-				headX = 0;
-				headY = 0;
-
-				if (inputArcad == '3') {
-					timeLevel = 25;
-					levelTimer.restart();
-					sp = third;
-					win = false;
-				}
-				startKey = false;
-			}
-			else {
-				snakeLength = 1;
-				isStyleChosen = false;
-				checkButton = false;
-				headX = 0;
-				headY = 0;
-
-				inputArcad = ' ';
-				win = false;
-				startKey = false;
-				state = MENU;
-			}
-			break;
-		}
-
-		menu.display();
+		windowMain.display();
 	}
 
 	saveRecords();

@@ -7,5 +7,6 @@ enum gameState {
 	ARCAD,
 	RECORD,
 	GAME,
-	END
+	END,
+	CLOSE
 };

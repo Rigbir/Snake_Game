@@ -36,3 +36,5 @@ int headX;
 int headY;
 int offsetX = 0;
 int offsetY = 0;
+
+gameState state;

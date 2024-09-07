@@ -144,6 +144,7 @@
     <ClCompile Include="Arcad3.cpp" />
     <ClCompile Include="ArcadSettings.cpp" />
     <ClCompile Include="ButtonView.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="main.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="ButtonView.h" />
     <ClInclude Include="CursorTexture.h" />
     <ClInclude Include="DrawField.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="gameState.h" />
     <ClInclude Include="globals.h" />

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "gameState.h"
 
 extern int cellSize;
 extern int rows;
@@ -40,3 +41,5 @@ extern int headX;
 extern int headY;
 extern int offsetX;
 extern int offsetY;
+
+extern gameState state;
