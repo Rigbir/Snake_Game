@@ -69,6 +69,7 @@ void startPosition(std::vector<std::vector<char>>& field, std::vector<std::pair<
 	}
 }
 
+//ther (next four function) require moving to a separate file. 
 void dynamicSpeed() {
 	if (snakeLength < 4) sp = fourth;
 	else if (snakeLength >= 4 && snakeLength < 10) sp = third;
@@ -289,6 +290,12 @@ void startGame(gameState& state) {
 
 	int currentField = 0;
 
+	sf::RectangleShape blackScreen;
+	int alpha;
+	bool fadeOut = false;
+
+	createParametrs(blackScreen, alpha);
+
 	while(start.isOpen()){
 		sf::Event event;
 		while (start.pollEvent(event)) {
@@ -319,30 +326,31 @@ void startGame(gameState& state) {
 							if (i == 3) input = '4';
 							if (i == 4) input = '5';
 
-							start.close();
+							fadeOut = true;
+							state = GAME;
 						}
 					}
 				}
 			}
-
-			for (auto& i : buttons) {
-				i.update(start);
-			}
-
-			start.clear();
-
-			start.draw(background);
-			start.draw(backgroundSecond);
-			start.draw(speedLabel);
-
-			for (auto& i : buttons) {
-				i.drawTo(start);
-			}
-
-			start.display();
 		}
+		for (auto& i : buttons) {
+			i.update(start);
+		}
+
+		start.clear();
+
+		start.draw(background);
+		start.draw(backgroundSecond);
+		start.draw(speedLabel);
+
+		for (auto& i : buttons) {
+			i.drawTo(start);
+		}
+
+		settingFade(start, blackScreen, fadeOut, alpha, state);
+
+		start.display();
 	}
-	state = GAME;
 }
 
 void style(gameState& state, int page = 1) {
@@ -423,6 +431,12 @@ void endGame(gameState& state) {
 		createSecondButton("Menu", buttonBackNormal, { 1160, 620 }, { 150, 45 })
 	};
 	
+	sf::RectangleShape blackScreen;
+	int alpha;
+	bool fadeOut = false;
+
+	createParametrs(blackScreen, alpha);
+
 	while (end.isOpen()) {
 		sf::Event event;
 		while (end.pollEvent(event)) {
@@ -450,7 +464,7 @@ void endGame(gameState& state) {
 							if (i == 0) checkEnd = false;
 							if (i == 1) checkEnd = true;
 
-							end.close();
+							fadeOut = true;
 							endMusic.stop();
 						}
 					}
@@ -472,10 +486,13 @@ void endGame(gameState& state) {
 			i.drawTo(end);
 		}
 
+		settingFade(end, blackScreen, fadeOut, alpha, state);
+
 		end.display();
 	}
 }
 
+//ther (next three function) require moving to a separate file. 
 void loadRecords() {
 	std::ifstream file("record.txt");
 	if (file.is_open()) {
@@ -568,7 +585,6 @@ void startGameWithSettings(gameState& state) {
 			startText(window, field);
 			if (event.type == sf::Event::KeyPressed) {
 				startKey = true;
-				sf::sleep(sf::milliseconds(250));
 				levelTimer.restart();
 				window.close();
 				break;
@@ -622,7 +638,7 @@ void startGameWithSettings(gameState& state) {
 				}
 			}
 		}
-
+		
 		if (state == GAME && startKey) {
 
 			chooceArcad(window, state, field, snake);
@@ -703,7 +719,7 @@ void recordMenu(gameState& state) {
 
 	sf::RectangleShape blackScreen;
 	int alpha;
-	bool fadeOut;
+	bool fadeOut = false;
 
 	createParametrs(blackScreen, alpha);
 
@@ -720,13 +736,14 @@ void recordMenu(gameState& state) {
 				}
 			}
 
-			if (event.type == sf::Event::MouseButtonPressed) {
+			if (event.type == sf::Event::MouseButtonReleased) {
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					if (menu.getPressed()) {
 						menu.setPressed(false);
 						menu.textureUpdate(record, buttonBackClick, buttonBackNormal);
-						soundBotton();
+						sf::sleep(sf::milliseconds(120));
 						fadeOut = true;
+						state = MENU;
 					}
 				}
 			}
@@ -743,7 +760,7 @@ void recordMenu(gameState& state) {
 		}
 		menu.drawTo(record);
 
-		settingFade(record, blackScreen, fadeOut, alpha, state, MENU);
+		settingFade(record, blackScreen, fadeOut, alpha, state);
 
 		record.display();
 	}
@@ -808,6 +825,12 @@ void menuBar(gameState& state) {
 	soundTest.setTexture(checkSound ? buttonNullSoundNormal : buttonFullSoundNormal);
 	soundTest.setPosition({ 1810, 990 });
 
+	sf::RectangleShape blackScreen;
+	int alpha;
+	bool fadeOut = false;
+
+	createParametrs(blackScreen, alpha);
+
 	while (menu.isOpen()) {
 		sf::Event event;
 		while (menu.pollEvent(event)) {
@@ -844,7 +867,7 @@ void menuBar(gameState& state) {
 							if (i == 3) state = RECORD;
 							if (i == 4) state = CLOSE;
 
-							return;
+							fadeOut = true;
 						}
 					}
 
@@ -875,6 +898,8 @@ void menuBar(gameState& state) {
 			i.drawTo(menu);
 		}
 		soundTest.drawTo(menu);
+
+		settingFade(menu, blackScreen, fadeOut, alpha, state);
 
 		menu.display();
 	}

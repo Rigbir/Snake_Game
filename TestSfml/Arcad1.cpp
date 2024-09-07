@@ -86,6 +86,7 @@ void firstArcadLogic(sf::RenderWindow& window, gameState& state, std::vector<std
 		music.stop();
 		endSound();
 		state = END;
+		sf::sleep(sf::milliseconds(100));
 		return;
 	}
 

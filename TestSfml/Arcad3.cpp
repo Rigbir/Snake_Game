@@ -87,6 +87,7 @@ void thirdArcadLogic(sf::RenderWindow& window, gameState& state, std::vector<std
 	if (headX < 0 || headX >= rows || headY < 0 || headY >= cols || thirdField[headX][headY] == '1' || thirdField[headX][headY] == 'O') {
 		music.stop();
 		endSound();
+		sf::sleep(sf::milliseconds(100));
 		state = END;
 		return;
 	}

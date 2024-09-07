@@ -7,6 +7,7 @@
 #include "gameState.h"
 #include "Texture.h"
 #include "globals.h"
+#include "Fade.h"
 
 void soundBottonThird();
 

@@ -85,7 +85,6 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 	sf::RectangleShape blackScreen;
 	int alpha;
 	bool fadeOut = false;
-	gameState newState = state;
 
 	createParametrs(blackScreen, alpha);
 
@@ -149,11 +148,10 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 						if (inputArcad == '3') {
 							sp = third;
 							levelTimer.restart();
-							window.close();
+							fadeOut = true;
 							state = GAME;
-							return;
 						}
-						window.close();
+						fadeOut = true;
 						state = START;
 					}
 					else if (secondButton.getPressed()) {
@@ -168,11 +166,10 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 						if (inputArcad == '3') {
 							sp = third;
 							levelTimer.restart();
-							window.close();
+							fadeOut = true;
 							state = GAME;
-							return;
 						}
-						window.close();
+						fadeOut = true;
 						state = START;
 					}
 					else if (thirdButton.getPressed()) {
@@ -187,11 +184,10 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 						if (inputArcad == '3') {
 							sp = third;
 							levelTimer.restart();
-							window.close();
+							fadeOut = true;
 							state = GAME;
-							return;
 						}
-						window.close();
+						fadeOut = true;
 						state = START;
 					}
 					else if (fourthButton.getPressed()) {
@@ -206,11 +202,10 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 						if (inputArcad == '3') {
 							sp = third;
 							levelTimer.restart();
-							window.close();
+							fadeOut = true;
 							state = GAME;
-							return;
 						}
-						window.close();
+						fadeOut = true;
 						state = START;
 					}
 					else if (nextButton.getPressed()) {
@@ -233,7 +228,7 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 						sf::sleep(sf::milliseconds(120));
 						checkButton = false;
 						fadeOut = true;
-						newState = MENU;
+						state = MENU;
 					}
 				}
 			}
@@ -272,7 +267,7 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 		}
 		menuButton.drawTo(window);
 
-		settingFade(window, blackScreen, fadeOut, alpha, state, newState);
+		settingFade(window, blackScreen, fadeOut, alpha, state);
 
 		window.display();
 	}

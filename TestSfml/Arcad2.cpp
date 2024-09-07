@@ -78,6 +78,7 @@ void secondArcadLogic(sf::RenderWindow& window, gameState& state, std::vector<st
 	if (headX < 0 || headX >= rows || headY < 0 || headY >= cols || secondField[headX][headY] == '1' || secondField[headX][headY] == 'O') {
 		music.stop();
 		endSound();
+		sf::sleep(sf::milliseconds(100));
 		state = END;
 		return;
 	}

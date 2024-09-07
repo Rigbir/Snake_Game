@@ -82,6 +82,12 @@ void displayArcadWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 	menuButton.setPosition({ windowSize.x / 2.0f, 1005 });
 	menuButton.setOrigin({ 150, 45 });
 
+	sf::RectangleShape blackScreen;
+	int alpha;
+	bool fadeOut = false;
+
+	createParametrs(blackScreen, alpha);
+
 	while (window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
@@ -138,7 +144,7 @@ void displayArcadWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 						else if (page == 2)
 							inputArcad = '5';
 						std::cout << "Input Arcad style: " << inputArcad << std::endl;
-						window.close();
+						fadeOut = true;
 						state = STYLE;
 					}
 					else if (secondButton.getPressed()) {
@@ -149,7 +155,7 @@ void displayArcadWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 						else if (page == 2)
 							inputArcad = '6';
 						std::cout << "Input Arcad style: " << inputArcad << std::endl;
-						window.close();
+						fadeOut = true;
 						state = STYLE;
 					}
 					else if (thirdButton.getPressed()) {
@@ -160,7 +166,7 @@ void displayArcadWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 						else if (page == 2)
 							inputArcad = '7';
 						std::cout << "Input Arcad style: " << inputArcad << std::endl;
-						window.close();
+						fadeOut = true;
 						state = STYLE;
 					}
 					else if (fourthButton.getPressed()) {
@@ -171,7 +177,7 @@ void displayArcadWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 						else if (page == 2)
 							inputArcad = '8';
 						std::cout << "Input Arcad style: " << inputArcad << std::endl;
-						window.close();
+						fadeOut = true;
 						state = START;
 					}
 					else if (nextButton.getPressed()) {
@@ -179,57 +185,62 @@ void displayArcadWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 						nextButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
 						sf::sleep(sf::milliseconds(120));
 						page++;
-						window.close();
+						fadeOut = true;
 					}
 					else if (backButton.getPressed()) {
 						backButton.setPressed(false);
 						backButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
 						sf::sleep(sf::milliseconds(120));
 						page--;
-						window.close();
+						fadeOut = true;
 					}
 					else if (menuButton.getPressed()) {
 						menuButton.setPressed(false);
 						menuButton.textureUpdate(window, buttonBackClick, buttonBackNormal);
 						sf::sleep(sf::milliseconds(120));
-						window.close();
+						fadeOut = true;
 						state = MENU;
 					}
 				}
 			}
-
-			firstButton.styleUpdate(window);
-			secondButton.styleUpdate(window);
-			thirdButton.styleUpdate(window);
-			fourthButton.styleUpdate(window);
-			if (page == 1) {
-				nextButton.update(window);
-			}
-			else {
-				nextButton.update(window);
-				backButton.update(window);
-			}
-			menuButton.update(window);
-
-			window.clear();
-
-			window.draw(backgroundSpriteSecond);
-			window.draw(backgroundSpriteFirst);
-
-			firstButton.drawTo(window);
-			secondButton.drawTo(window);
-			thirdButton.drawTo(window);
-			fourthButton.drawTo(window);
-			if (page == 1) {
-				nextButton.drawTo(window);
-			}
-			else {
-				nextButton.drawTo(window);
-				backButton.drawTo(window);
-			}
-			menuButton.drawTo(window);
-
-			window.display();
 		}
+
+
+		firstButton.styleUpdate(window);
+		secondButton.styleUpdate(window);
+		thirdButton.styleUpdate(window);
+		fourthButton.styleUpdate(window);
+
+		if (page == 1) {
+			nextButton.update(window);
+		}
+		else {
+			nextButton.update(window);
+			backButton.update(window);
+		}
+		menuButton.update(window);
+
+		window.clear();
+
+		window.draw(backgroundSpriteSecond);
+		window.draw(backgroundSpriteFirst);
+
+		firstButton.drawTo(window);
+		secondButton.drawTo(window);
+		thirdButton.drawTo(window);
+		fourthButton.drawTo(window);
+
+		if (page == 1) {
+			nextButton.drawTo(window);
+		}
+		else {
+			nextButton.drawTo(window);
+			backButton.drawTo(window);
+		}
+		menuButton.drawTo(window);
+
+		settingFade(window, blackScreen, fadeOut, alpha, state);
+
+		window.display();
 	}
 }
