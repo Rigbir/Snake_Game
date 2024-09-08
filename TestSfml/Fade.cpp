@@ -14,6 +14,9 @@ void settingFade(sf::RenderWindow& window, sf::RectangleShape& blackScreen, bool
 			blackScreen.setFillColor(sf::Color(0, 0, 0, alpha));
 		}
 		else {
+			window.clear();
+			window.draw(blackScreen);
+			window.display();
 			window.close();
 			fadeOut = false;
 			state = state;

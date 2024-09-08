@@ -974,10 +974,13 @@ int main() {
 
 	loadRecords();
 
-	sf::RenderWindow windowMain(sf::VideoMode(1920, 1080), "Menu", sf::Style::Fullscreen);
+	sf::RenderWindow windowMain(sf::VideoMode(1920, 1080), "handleMenu", sf::Style::Fullscreen);
+
+	windowMain.clear(sf::Color::Black);
+	windowMain.display();
 
 	while (windowMain.isOpen()) {
-		windowMain.clear();
+		windowMain.clear(sf::Color::Black);
 
 		handleState(windowMain, state);
 
