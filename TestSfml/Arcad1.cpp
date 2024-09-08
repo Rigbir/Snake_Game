@@ -1,6 +1,7 @@
 #include "Arcad1.h"
 #include "Arcad2.h"
 #include "Arcad3.h"
+#include "Arcad4.h"
 #include "Sounds.h"
 
 sf::Clock unFoodTimer;
@@ -126,6 +127,9 @@ void chooceArcad(sf::RenderWindow& window, gameState& state, std::vector<std::ve
 		break;
 	case '3':
 		thirdArcadLogic(window, state, firstField, snake);
+		break;
+	case '4':
+		fourthArcadLogic(window, state, firstField, snake);
 		break;
 	default:
 		firstArcadLogic(window, state, firstField, snake);

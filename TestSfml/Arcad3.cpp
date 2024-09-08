@@ -1,6 +1,7 @@
 #include "Arcad1.h"
 #include "Sounds.h"
 #include "Arcad3.h"
+#include "Arcad4.h"
 
 std::vector<std::vector<char>> thirdField() {
 	const char* customField[] = {
@@ -154,9 +155,15 @@ void scoreArcad(sf::RenderWindow& window, std::vector<std::vector<char>>& thirdF
 	sf::Text text;
 	text.setFont(font);
 
-	int scoreElapsed = foodForNextLevel - snakeLength;
-	if (scoreElapsed < 0) scoreElapsed = 0;
-	text.setString("Score: " + std::to_string(scoreElapsed));
+	if (inputArcad == '4') {
+		int scoreElapsed = (foodForNextLevel * count) - snakeLength;
+		text.setString("Score: " + std::to_string(scoreElapsed));
+	}
+	else {
+		int scoreElapsed = foodForNextLevel - snakeLength;
+		if (scoreElapsed < 0) scoreElapsed = 0;
+		text.setString("Score: " + std::to_string(scoreElapsed));
+	}
 
 	text.setCharacterSize(36);
 	text.setFillColor(sf::Color(255, 250, 205));

@@ -178,6 +178,7 @@ void displayArcadWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 							inputArcad = '8';
 						std::cout << "Input Arcad style: " << inputArcad << std::endl;
 						fadeOut = true;
+						inputStyle = '1';
 						state = START;
 					}
 					else if (nextButton.getPressed()) {

@@ -142,6 +142,7 @@
     <ClCompile Include="Arcad1.cpp" />
     <ClCompile Include="Arcad2.cpp" />
     <ClCompile Include="Arcad3.cpp" />
+    <ClCompile Include="Arcad4.cpp" />
     <ClCompile Include="ArcadSettings.cpp" />
     <ClCompile Include="ButtonView.cpp" />
     <ClCompile Include="Fade.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Arcad1.h" />
     <ClInclude Include="Arcad2.h" />
     <ClInclude Include="Arcad3.h" />
+    <ClInclude Include="Arcad4.h" />
     <ClInclude Include="Arcad_manger.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="ButtonView.h" />

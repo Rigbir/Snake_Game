@@ -30,6 +30,7 @@
 #include "Arcad1.h"
 #include "Arcad2.h"
 #include "Arcad3.h"
+#include "Arcad4.h"
 
 #define RED_TEXT "\033[1;31m"
 #define WHITE_TEXT "\033[1;37m"
@@ -561,6 +562,9 @@ void startGameWithSettings(gameState& state) {
 	case '3':
 		field = thirdField();
 		break;
+	case '4':
+		field = barier();
+		break;
 	default:
 		field = barier();
 		break;
@@ -648,15 +652,23 @@ void startGameWithSettings(gameState& state) {
 			window.clear();
 
 			window.draw(background);
-			draw(window, field, snake);
-			textureSnake(window, snake);
-			
-			if (inputArcad == '3') {
-				timeArcad(window, field);
+
+			if (inputArcad == '4') {
+				fieldChoose(window, field, snake);
+				textureSnake(window, snake);
+				isStyleChosen = false;
 				scoreArcad(window, field);
 			}
 			else {
-				coundScore(window, field);
+				draw(window, field, snake);
+				textureSnake(window, snake);
+				if (inputArcad == '3') {
+					timeArcad(window, field);
+					scoreArcad(window, field);
+				}
+				else {
+					coundScore(window, field);
+				}
 			}
 
 			window.display();
@@ -777,7 +789,7 @@ void arcad(gameState& state, int page = 1) {
 			styleFirst.loadFromFile("style/arcad1.png");
 			styleSecond.loadFromFile("style/arcad2.png");
 			styleThird.loadFromFile("style/arcad3.png");
-			styleFourth.loadFromFile("style/arcad.png");
+			styleFourth.loadFromFile("style/arcad4.png");
 		}
 		else if (page == 2) {
 			styleFirst.loadFromFile("style/arcad.png");
@@ -945,15 +957,29 @@ void handleState(sf::RenderWindow& window, gameState& state) {
 				sp = third;
 				win = false;
 			}
+			if (inputArcad == '4') {
+				next = 2;
+				count = 1;
+				inputStyle = '1';
+				flagStyle = false;
+				win = false;
+			}
 			startKey = false;
 		}
 		else {
+			if (inputArcad == '4') {
+				next = 2;
+				count = 1;
+				inputStyle = '1';
+				flagStyle = false;
+			}
+
 			snakeLength = 1;
 			isStyleChosen = false;
 			checkButton = false;
 			headX = 0;
 			headY = 0;
-
+			
 			inputArcad = ' ';
 			win = false;
 			startKey = false;

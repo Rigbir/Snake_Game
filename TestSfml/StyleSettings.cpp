@@ -151,8 +151,10 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 							fadeOut = true;
 							state = GAME;
 						}
-						fadeOut = true;
-						state = START;
+						else {
+							fadeOut = true;
+							state = START;
+						}
 					}
 					else if (secondButton.getPressed()) {
 						secondButton.setPressed(false);
@@ -169,8 +171,10 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 							fadeOut = true;
 							state = GAME;
 						}
-						fadeOut = true;
-						state = START;
+						else {
+							fadeOut = true;
+							state = START;
+						}
 					}
 					else if (thirdButton.getPressed()) {
 						thirdButton.setPressed(false);
@@ -187,8 +191,10 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 							fadeOut = true;
 							state = GAME;
 						}
-						fadeOut = true;
-						state = START;
+						else {
+							fadeOut = true;
+							state = START;
+						}
 					}
 					else if (fourthButton.getPressed()) {
 						fourthButton.setPressed(false);
@@ -205,8 +211,10 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 							fadeOut = true;
 							state = GAME;
 						}
-						fadeOut = true;
-						state = START;
+						else {
+							fadeOut = true;
+							state = START;
+						}
 					}
 					else if (nextButton.getPressed()) {
 						nextButton.setPressed(false);

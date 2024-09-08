@@ -546,7 +546,6 @@ void drawCatField(sf::RenderWindow& window, std::vector<std::vector<char>>& fiel
 }
 
 void fieldChoose(sf::RenderWindow& window, std::vector<std::vector<char>>& field, std::vector<std::pair<int, int>>& snake) {
-
 	switch (inputStyle){
 	case '1':
 		drawBlackField(window, field, snake);
