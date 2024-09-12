@@ -578,26 +578,6 @@ void startGameWithSettings(gameState& state) {
 	startPosition(field, snake);
 	food(field);
 
-	/*while (!startKey && window.isOpen()) {
-		sf::Event event;
-		while (window.pollEvent(event)) {
-
-			window.clear();
-
-			window.draw(background);
-			draw(window, field, snake);
-			startText(window, field);
-			if (event.type == sf::Event::KeyPressed) {
-				startKey = true;
-				levelTimer.restart();
-				window.close();
-				break;
-			}
-
-			window.display();
-		}
-	}*/
-
 	while (window.isOpen()) {
 		sf::Event event;
 		bool directionChanged = false;
@@ -657,7 +637,6 @@ void startGameWithSettings(gameState& state) {
 			window.display();
 		}
 		else {
-
 			if (state == GAME && startKey) {
 
 				chooceArcad(window, state, field, snake);

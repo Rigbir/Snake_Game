@@ -236,6 +236,7 @@ void displayStyleWindow(sf::RenderWindow& window, gameState& state, sf::Texture&
 						sf::sleep(sf::milliseconds(120));
 						checkButton = false;
 						fadeOut = true;
+						inputArcad = ' ';
 						state = MENU;
 					}
 				}
