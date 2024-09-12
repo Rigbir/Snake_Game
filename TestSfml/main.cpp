@@ -578,7 +578,7 @@ void startGameWithSettings(gameState& state) {
 	startPosition(field, snake);
 	food(field);
 
-	while (!startKey && window.isOpen()) {
+	/*while (!startKey && window.isOpen()) {
 		sf::Event event;
 		while (window.pollEvent(event)) {
 
@@ -596,7 +596,7 @@ void startGameWithSettings(gameState& state) {
 
 			window.display();
 		}
-	}
+	}*/
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -606,8 +606,10 @@ void startGameWithSettings(gameState& state) {
 				dynamicSpeed();
 			}
 
-			if (event.type == sf::Event::Closed)
-				window.close();
+			if (event.type == sf::Event::KeyPressed) {
+				startKey = true;
+				levelTimer.restart();
+			}
 
 			if (event.type == sf::Event::KeyPressed && !directionChanged) {
 				switch (event.key.code) {
@@ -641,57 +643,71 @@ void startGameWithSettings(gameState& state) {
 					break;
 				}
 			}
-		}
-		
-		if (state == GAME && startKey) {
 
-			chooceArcad(window, state, field, snake);
-
-			directionChanged = false;
-
-			window.clear();
-
-			window.draw(background);
-
-			if (inputArcad == '4') {
-				fieldChoose(window, field, snake);
-				textureSnake(window, snake);
-				isStyleChosen = false;
-				scoreArcad(window, field);
+			if (event.type == sf::Event::Closed) {
+				window.close();
 			}
-			else {
-				draw(window, field, snake);
-				textureSnake(window, snake);
-				if (inputArcad == '3') {
-					timeArcad(window, field);
+		}
+
+		if (!startKey) {
+			window.clear();
+			window.draw(background);
+			draw(window, field, snake);
+			startText(window, field);
+			window.display();
+		}
+		else {
+
+			if (state == GAME && startKey) {
+
+				chooceArcad(window, state, field, snake);
+
+				directionChanged = false;
+
+				window.clear();
+
+				window.draw(background);
+
+				if (inputArcad == '4') {
+					fieldChoose(window, field, snake);
+					textureSnake(window, snake);
+					isStyleChosen = false;
 					scoreArcad(window, field);
 				}
 				else {
-					coundScore(window, field);
+					draw(window, field, snake);
+					textureSnake(window, snake);
+					if (inputArcad == '3') {
+						timeArcad(window, field);
+						scoreArcad(window, field);
+					}
+					else {
+						coundScore(window, field);
+					}
 				}
-			}
 
-			window.display();
-			sf::sleep(sf::milliseconds(sp));
-		}
-		else {
-			if (input == '1') {
-				firstRecord = std::max(firstRecord, snakeLength);
+				window.display();
+				sf::sleep(sf::milliseconds(sp));
 			}
-			else if (input == '2') {
-				secondRecord = std::max(secondRecord, snakeLength);
-			}
-			else if (input == '3') {
-				thirdRecord = std::max(thirdRecord, snakeLength);
-			}
-			else if (input == '4') {
-				fourthRecord = std::max(fourthRecord, snakeLength);
-			}
-			else if (input == '5') {
-				dynamicRecord = std::max(dynamicRecord, snakeLength);
-			}
+			else {
+				if (input == '1') {
+					firstRecord = std::max(firstRecord, snakeLength);
+				}
+				else if (input == '2') {
+					secondRecord = std::max(secondRecord, snakeLength);
+				}
+				else if (input == '3') {
+					thirdRecord = std::max(thirdRecord, snakeLength);
+				}
+				else if (input == '4') {
+					fourthRecord = std::max(fourthRecord, snakeLength);
+				}
+				else if (input == '5') {
+					dynamicRecord = std::max(dynamicRecord, snakeLength);
+				}
 
-			break;
+				break;
+			}
 		}
 	}
 	music.stop();
