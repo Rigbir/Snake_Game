@@ -586,7 +586,7 @@ void startGameWithSettings(gameState& state) {
 				dynamicSpeed();
 			}
 
-			if (event.type == sf::Event::KeyPressed) {
+			if (!startKey && event.type == sf::Event::KeyPressed) {
 				startKey = true;
 				levelTimer.restart();
 			}
@@ -969,6 +969,7 @@ void handleState(sf::RenderWindow& window, gameState& state) {
 				flagStyle = false;
 			}
 
+			timeLevel = 25;
 			snakeLength = 1;
 			isStyleChosen = false;
 			checkButton = false;
