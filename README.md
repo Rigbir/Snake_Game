@@ -7,6 +7,8 @@
 - Also change the gameplay in the Arcade;
 - Turn off the game sounds;
 
+![](./screenshots/screen_Menu.png)
+
 - This snake differs from the others for various reasons, the first of them is that not all snakes have such interesting styles. The gameplay is also located in a slot machine, which brings the user back to the old atmosphere of slot machine shops. 
 
 - The project will be supported: patches will be released in which styles/arcades will be added. There are also plans in the future for multiplatform and launching the game on various monitor resolutions.
